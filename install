@@ -1,0 +1,5 @@
+sudo dnf install gdm gnome-terminal 
+sudo systemctl enable gdm --now
+sudo systemctl set-default graphical.target
+sudo dnf remove gnome-tour malcontent
+sudo dnf install thunar
