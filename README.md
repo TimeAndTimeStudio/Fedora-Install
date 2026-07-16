@@ -1,18 +1,5 @@
 # Fedora Install Minimal
 
-sudo dnf install gdm gnome-terminal 
-sudo dnf remove gnome-tour
-sudo dnf install nautilus
-sudo dnf remove malcontent-control
-sudo dnf install google-noto-sans-thai-fonts google-noto-sans-cjk-fonts
-sudo dnf remove gnome-remote-desktop
-
-sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-
-sudo dnf install brave-origin
-
-sudo firewall-cmd --remove-service=ssh --remove-service=mdns --remove-service=dhcpv6-client --permanent
-
-sudo systemctl set-default graphical.target
-
-sudo systemctl enable gdm --now
+- Install Fedora Custom Operating https://fedoraproject.org/misc/#everything
+- Download File "Install"
+- Run "bash Install"
