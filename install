@@ -31,18 +31,7 @@ echo "================================"
 sudo dnf remove -y \
     gnome-tour \
     malcontent-control \
-    gnome-remote-desktop || true
-
-
-echo
-echo "================================"
-echo " Installing Brave Browser"
-echo "================================"
-
-sudo dnf config-manager addrepo \
---from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-
-sudo dnf install -y brave-origin
+    gnome-remote-desktop
 
 
 echo
@@ -59,7 +48,7 @@ sudo plymouth-set-default-theme -R bgrt
 # Optional Applications Selector
 # ==============================
 
-items=("Steam" "Moonlight" "Sunshine" "Modrinth App" "Intel Media Driver")
+items=("Steam" "Moonlight" "Sunshine" "Modrinth App" "Intel Media Driver" "Brave Origin")
 selected=(0 0 0)
 
 index=0
@@ -177,6 +166,8 @@ if [ "${selected[1]}" = 1 ]; then
 
     sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/moonlight.svg
     sudo mv moonlight /usr/bin/moonlight
+
+    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 qt6-qtquickcontrols2
 fi
 
 
@@ -198,6 +189,13 @@ fi
 if [ "${selected[4]}" = 1 ]; then
     echo "Installing Moonlight..."
     sudo dnf install libva-intel-media-driver
+fi
+
+if [ "${selected[5]}" = 1 ]; then
+    echo "Installing Moonlight..."
+    wget https://brave-browser-rpm-release.s3.brave.com/x86_64/brave-browser-1.92.141-1.x86_64.rpm
+    sudo dnf install ./brave-browser-1.92.141-1.x86_64.rpm
+    sudo rm brave-browser-1.92.141-1.x86_64.rpm
 fi
 
 echo
