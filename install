@@ -137,16 +137,16 @@ if [ "${selected[3]}" = 1 ]; then
     echo "Installing Modrinth App..."
     wget https://launcher-files.modrinth.com/versions/0.15.11/linux/Modrinth%20App-0.15.11-1.x86_64.rpm
     sudo dnf install ./"Modrinth App-0.15.11-1.x86_64.rpm"
-    sudo rm Modrinth App-0.15.11-1.x86_64.rpm
+    sudo rm "Modrinth App-0.15.11-1.x86_64.rpm"
 fi
 
 if [ "${selected[4]}" = 1 ]; then
-    echo "Installing Moonlight..."
+    echo "Installing Intel Media Driver..."
     sudo dnf install libva-intel-media-driver
 fi
 
 if [ "${selected[5]}" = 1 ]; then
-    echo "Installing Moonlight..."
+    echo "Installing Brave Origin..."
     wget https://brave-browser-rpm-release.s3.brave.com/x86_64/brave-browser-1.92.141-1.x86_64.rpm
     sudo dnf install ./brave-browser-1.92.141-1.x86_64.rpm
     sudo rm brave-browser-1.92.141-1.x86_64.rpm
