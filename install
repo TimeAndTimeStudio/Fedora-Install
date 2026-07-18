@@ -43,87 +43,40 @@ sudo dnf install -y plymouth-system-theme
 
 sudo plymouth-set-default-theme -R bgrt
 
-
-# ==============================
-# Optional Applications Selector
-# ==============================
-
-items=("Steam" "Moonlight" "Sunshine" "Modrinth App" "Intel Media Driver" "Brave Origin")
-selected=(0 0 0)
-
-index=0
-
-draw_menu() {
-    clear
-
-    echo "================================"
-    echo " Optional Applications"
-    echo "================================"
-    echo
-    echo "↑ ↓ Move"
-    echo "Space Select"
-    echo "Enter Continue"
-    echo
-
-    for i in "${!items[@]}"; do
-
-        if [ "${selected[$i]}" = 1 ]; then
-            mark="x"
-        else
-            mark=" "
-        fi
-
-        if [ $i -eq $index ]; then
-            echo "> [$mark] ${items[$i]}"
-        else
-            echo "  [$mark] ${items[$i]}"
-        fi
-    done
-}
+echo
+echo "================================"
+echo " Optional Applications"
+echo "================================"
+echo
 
 
-while true; do
+items=(
+    "Steam"
+    "Moonlight"
+    "Sunshine"
+    "Modrinth App"
+    "Intel Media Driver"
+    "Brave Browser"
+)
 
-    draw_menu
+selected=(0 0 0 0 0 0)
 
-    read -rsn1 key
-
-    case "$key" in
-
-        " ")
-            if [ "${selected[$index]}" = 1 ]; then
-                selected[$index]=0
-            else
-                selected[$index]=1
-            fi
-            ;;
-
-        "")
-            break
-            ;;
-
-        $'\x1b')
-            read -rsn2 key
-
-            case "$key" in
-                "[A")
-                    ((index--))
-                    [ $index -lt 0 ] && index=2
-                    ;;
-
-                "[B")
-                    ((index++))
-                    [ $index -gt 2 ] && index=0
-                    ;;
-            esac
-            ;;
-
-    esac
-
+for i in "${!items[@]}"; do
+    echo "$i) ${items[$i]}"
 done
 
+echo
+echo "เลือกหลายรายการโดยคั่นด้วยช่องว่าง"
+echo "ตัวอย่าง: 0 1 5"
+echo
 
-clear
+read -rp "เลือก: " choices
+
+for n in $choices; do
+    if [[ "$n" =~ ^[0-9]+$ ]] && [ "$n" -lt "${#items[@]}" ]; then
+        selected[$n]=1
+    fi
+done
 
 echo "================================"
 echo " Installing selected apps"
@@ -205,8 +158,8 @@ echo " Enable GNOME Login"
 echo "================================"
 
 sudo systemctl set-default graphical.target
-sudo systemctl enable gdm --now
 sudo rm install
+sudo systemctl enable gdm --now
 
 echo
 echo "================================"
