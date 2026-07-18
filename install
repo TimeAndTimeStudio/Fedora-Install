@@ -59,7 +59,7 @@ sudo plymouth-set-default-theme -R bgrt
 # Optional Applications Selector
 # ==============================
 
-items=("Steam" "Moonlight" "Sunshine" "Modrinth App")
+items=("Steam" "Moonlight" "Sunshine" "Modrinth App" "Intel Media Driver")
 selected=(0 0 0)
 
 index=0
@@ -186,6 +186,10 @@ if [ "${selected[3]}" = 1 ]; then
     sudo rm Modrinth App-0.15.11-1.x86_64.rpm
 fi
 
+if [ "${selected[4]}" = 1 ]; then
+    echo "Installing Moonlight..."
+    sudo dnf install libva-intel-media-driver
+fi
 
 echo
 echo "================================"
