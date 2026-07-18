@@ -167,7 +167,8 @@ if [ "${selected[1]}" = 1 ]; then
     sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/moonlight.svg
     sudo mv moonlight /usr/bin/moonlight
 
-    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 qt6-qtquickcontrols2
+    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64
+    sudo dnf install --setopt=install_weak_deps=False qt6-qtdeclarative
 fi
 
 
