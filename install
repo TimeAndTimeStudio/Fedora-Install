@@ -118,7 +118,7 @@ if [ "${selected[1]}" = 1 ]; then
     mkdir -p ~/.local/share/applications
     mv moonlight.desktop ~/.local/share/applications/moonlight.desktop
 
-    sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/app/moonlight.svg
+    sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/apps/moonlight.svg
     sudo mv moonlight /usr/bin/moonlight
 
     sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 -y
