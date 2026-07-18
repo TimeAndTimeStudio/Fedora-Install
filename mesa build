@@ -37,7 +37,8 @@ sudo dnf install -y \
     expat-devel \
     zlib-devel \
     libclc-devel \
-    spirv-llvm-translator-devel
+    spirv-llvm-translator-devel \
+    spirv-tools-devel
 
 
 cd ~
