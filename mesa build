@@ -1,0 +1,58 @@
+sudo dnf install -y \
+    git \
+    gcc \
+    gcc-c++ \
+    make \
+    cmake \
+    meson \
+    ninja-build \
+    pkgconf-pkg-config \
+    python3-pip \
+    python3-mako \
+    python3-pyyaml \
+    bison \
+    flex \
+    glslang \
+    libdrm-devel \
+    libedit-devel \
+    elfutils-libelf-devel \
+    libunwind-devel \
+    llvm-devel \
+    clang \
+    clang-devel \
+    libva-devel \
+    libvdpau-devel \
+    vulkan-loader-devel \
+    vulkan-headers \
+    wayland-devel \
+    wayland-protocols-devel \
+    libX11-devel \
+    libXext-devel \
+    libXfixes-devel \
+    libXrandr-devel \
+    libXxf86vm-devel \
+    libxcb-devel \
+    libxshmfence-devel \
+    libzstd-devel \
+    expat-devel \
+    zlib-devel
+
+
+cd ~
+git clone https://gitlab.freedesktop.org/mesa/mesa.git
+cd mesa
+
+git tag -l "mesa-*" --sort=-version:refname | head
+git checkout mesa-26.1.5
+
+
+meson setup build \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dgallium-drivers=radeonsi \
+    -Dvulkan-drivers=amd \
+    -Dvideo-codecs=all
+
+ninja -C build -j$(nproc)
+DESTDIR=$HOME/mesa-install ninja -C build install
+ls ~/mesa-install/usr
