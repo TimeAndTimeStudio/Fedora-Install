@@ -94,7 +94,7 @@ if [ "${selected[0]}" = 1 ]; then
     sudo rm steam
     sudo mv bin_steam.sh steam
     sudo mv steam /usr/bin/
-    mkdir ~/.local/share/applications
+    mkdir -p ~/.local/share/applications
     mv steam.desktop ~/.local/share/applications/steam.desktop
     chmod +x ~/.local/share/applications/steam.desktop
     sudo mkdir /usr/lib/steam
@@ -114,7 +114,7 @@ if [ "${selected[1]}" = 1 ]; then
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.desktop
 
     sudo chmod +x moonlight.desktop moonlight
-    mkdir ~/.local/share/applications
+    mkdir -p ~/.local/share/applications
     mv moonlight.desktop ~/.local/share/applications/moonlight.desktop
 
     sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/moonlight.svg
