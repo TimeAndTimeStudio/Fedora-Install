@@ -1,0 +1,12 @@
+sudo dnf install git cmake ninja-build gcc gcc-c++ libdrm-devel libva-devel pkgconf-pkg-config intel-gmmlib-devel
+git checkout intel-media-26.1.5
+
+mkdir build_media
+cd build_media
+
+cmake ../media-driver \
+  -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+  -DCMAKE_C_FLAGS="-Wno-error=dangling-pointer" \
+  -DCMAKE_CXX_FLAGS="-Wno-error=dangling-pointer"
+
+make -j$(nproc)
