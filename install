@@ -117,6 +117,7 @@ if [ "${selected[1]}" = 1 ]; then
     sudo chmod +x moonlight.desktop moonlight mesa.sh
     mkdir -p ~/.local/share/applications
     mv moonlight.desktop ~/.local/share/applications/moonlight.desktop
+    sudo mv mesa.sh /usr/bin/mesa.sh
 
     sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/apps/moonlight.svg
     sudo mv moonlight /usr/bin/moonlight
