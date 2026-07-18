@@ -16,6 +16,6 @@ export VK_DRIVER_FILES="$MESA_PREFIX/share/vulkan/icd.d"
 
 export VDPAU_DRIVER_PATH="$MESA_PREFIX/lib64/vdpau"
 
-export PKG_CONFIG_PATH="$FFMPEG_PREFIX/lib/pkgconfig:$MESA_PREFIX/lib64/pkgconfig:$MESA_PREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$FFMPEG_PREFIX/lib/pkgconfig:$MESA_PREFIX/lib64/pkgconfig
 
 exec "$@"
