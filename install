@@ -191,7 +191,7 @@ echo "================================"
 
 sudo systemctl set-default graphical.target
 sudo systemctl enable gdm --now
-
+sudo rm install
 
 echo
 echo "================================"
