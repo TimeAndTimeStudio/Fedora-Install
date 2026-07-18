@@ -1,16 +1,199 @@
-sudo dnf install gdm gnome-terminal 
-sudo dnf remove gnome-tour
-sudo dnf install nautilus
-sudo dnf remove malcontent-control
-sudo dnf install google-noto-sans-thai-fonts google-noto-sans-cjk-fonts
-sudo dnf remove gnome-remote-desktop
+#!/usr/bin/env bash
 
-sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+set -e
 
-sudo dnf install brave-origin
+# ==============================
+# Fedora Minimal GNOME Setup
+# ==============================
 
-sudo firewall-cmd --remove-service=ssh --remove-service=mdns --remove-service=dhcpv6-client --permanent
+echo "================================"
+echo " Installing GNOME base system"
+echo "================================"
+
+sudo dnf install -y \
+    gdm \
+    gnome-terminal \
+    nautilus \
+    google-noto-sans-thai-fonts \
+    google-noto-sans-cjk-fonts \
+    tar \
+    wireguard-tools
+
+
+echo
+echo "================================"
+echo " Removing unnecessary packages"
+echo "================================"
+
+sudo dnf remove -y \
+    gnome-tour \
+    malcontent-control \
+    gnome-remote-desktop || true
+
+
+echo
+echo "================================"
+echo " Installing Brave Browser"
+echo "================================"
+
+sudo dnf config-manager addrepo \
+--from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+
+sudo dnf install -y brave-origin
+
+
+echo
+echo "================================"
+echo " Configure Plymouth"
+echo "================================"
+
+sudo dnf install -y plymouth-system-theme
+
+sudo plymouth-set-default-theme -R bgrt
+
+
+# ==============================
+# Optional Applications Selector
+# ==============================
+
+items=("Steam" "Moonlight" "Sunshine" "Modrinth App")
+selected=(0 0 0)
+
+index=0
+
+draw_menu() {
+    clear
+
+    echo "================================"
+    echo " Optional Applications"
+    echo "================================"
+    echo
+    echo "↑ ↓ Move"
+    echo "Space Select"
+    echo "Enter Continue"
+    echo
+
+    for i in "${!items[@]}"; do
+
+        if [ "${selected[$i]}" = 1 ]; then
+            mark="x"
+        else
+            mark=" "
+        fi
+
+        if [ $i -eq $index ]; then
+            echo "> [$mark] ${items[$i]}"
+        else
+            echo "  [$mark] ${items[$i]}"
+        fi
+    done
+}
+
+
+while true; do
+
+    draw_menu
+
+    read -rsn1 key
+
+    case "$key" in
+
+        " ")
+            if [ "${selected[$index]}" = 1 ]; then
+                selected[$index]=0
+            else
+                selected[$index]=1
+            fi
+            ;;
+
+        "")
+            break
+            ;;
+
+        $'\x1b')
+            read -rsn2 key
+
+            case "$key" in
+                "[A")
+                    ((index--))
+                    [ $index -lt 0 ] && index=2
+                    ;;
+
+                "[B")
+                    ((index++))
+                    [ $index -gt 2 ] && index=0
+                    ;;
+            esac
+            ;;
+
+    esac
+
+done
+
+
+clear
+
+echo "================================"
+echo " Installing selected apps"
+echo "================================"
+
+
+if [ "${selected[0]}" = 1 ]; then
+    echo "Installing Steam..."
+    sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686
+    wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
+    wget https://github.com/TimeAndTimeStudio/Game-Web-Site/releases/download/icon/icons.tar.xz
+    
+    tar -xvf steam_latest-stable.tar.gz
+    cd steam-launcher
+    sudo rm steam
+    sudo mv bin_steam.sh steam
+    sudo mv steam /usr/bin/
+    mkdir ~/.local/share/applications
+    mv steam.desktop ~/.local/share/applications/steam.desktop
+    chmod +x ~/.local/share/applications/steam.desktop
+    sudo mkdir /usr/lib/steam
+    sudo mv bootstraplinux_ubuntu12_32.tar.xz /usr/lib/steam/
+    cd ../
+    tar -xvf icons.tar.xz
+    sudo cp -r icons/* /usr/share/icons/hicolor/
+    sudo rm icons.tar.xz steam_latest-stable.tar.gz
+    sudo rm -r steam-launcher
+fi
+
+
+if [ "${selected[1]}" = 1 ]; then
+    echo "Installing Moonlight..."
+    sudo dnf install -y moonlight-qt
+fi
+
+
+if [ "${selected[2]}" = 1 ]; then
+    echo "Installing Sunshine..."
+    wget https://github.com/LizardByte/Sunshine/releases/download/v2026.516.143833/Sunshine-2026.516.143833-1.fc44.x86_64.rpm
+    sudo dnf install ./Sunshine-2026.516.143833-1.fc44.x86_64.rpm
+    systemctl --user enable --now app-dev.lizardbyte.app.Sunshine.service
+    sudo rm Sunshine-2026.516.143833-1.fc44.x86_64.rpm
+fi
+
+if [ "${selected[3]}" = 1 ]; then
+    echo "Installing Modrinth App..."
+    wget https://launcher-files.modrinth.com/versions/0.15.11/linux/Modrinth%20App-0.15.11-1.x86_64.rpm
+    sudo dnf install ./"Modrinth App-0.15.11-1.x86_64.rpm"
+    sudo rm Modrinth App-0.15.11-1.x86_64.rpm
+fi
+
+
+echo
+echo "================================"
+echo " Enable GNOME Login"
+echo "================================"
 
 sudo systemctl set-default graphical.target
-
 sudo systemctl enable gdm --now
+
+
+echo
+echo "================================"
+echo " Setup Complete"
+echo "================================"
