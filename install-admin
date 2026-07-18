@@ -57,9 +57,10 @@ items=(
     "Brave Origin"
     "WireGuard"
     "Remove REPO"
+    "Wallpaper"
 )
 
-selected=(0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -167,6 +168,12 @@ if [ "${selected[6}" = 1 ]; then
     sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
     sudo dnf clean all
     sudo dnf makecache
+fi
+
+if [ "${selected[7}" = 1 ]; then
+    echo "Installing Wallpaper..."
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Game-Web-Site/refs/heads/main/019b913a-a484-7237-b907-2444e37e22e2.png
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Game-Web-Site/refs/heads/main/horizontal%20pic.jpg
 fi
 
 echo
