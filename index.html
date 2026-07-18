@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fedora Install GNOME Minimal</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    background: #0d0d0d;
+    color: #eeeeee;
+}
+
+h1 {
+    color: #ff7a00;
+    text-align: center;
+}
+
+h2 {
+    color: #ff9800;
+    border-bottom: 2px solid #ff7a00;
+    padding-bottom: 5px;
+}
+
+.card {
+    background: #181818;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid #ff7a00;
+    box-shadow: 0 0 15px rgba(255,122,0,0.25);
+}
+
+code {
+    display: block;
+    background: #000000;
+    color: #ff9800;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #ff7a00;
+    overflow-x: auto;
+    font-family: "Courier New", monospace;
+}
+
+a {
+    color: #ff9800;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffcc80;
+}
+
+.step {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff7a00;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<h1>Fedora Install GNOME Minimal</h1>
+
+
+<div class="card">
+
+<h2>Overview</h2>
+
+<p>
+ติดตั้ง GNOME Desktop Minimal
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Requirements</h2>
+
+<p>
+ติดตั้ง Fedora Custom Operating System
+</p>
+
+<a href="https://fedoraproject.org/misc/#everything">
+Fedora Everything
+</a>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Step 1: Update System</h2>
+
+<p class="step">
+อัปเดตระบบและติดตั้ง wget
+</p>
+
+<code>
+sudo dnf update && sudo dnf upgrade
+
+sudo dnf install wget
+</code>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Step 2: Download Installer</h2>
+
+<p class="step">
+ดาวน์โหลด Fedora GNOME Minimal Installer
+</p>
+
+<code>
+wget https://timeandtimestudio.github.io/Fedora-Install/install
+</code>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Step 3: Run Installer</h2>
+
+<p class="step">
+เริ่มติดตั้งระบบ
+</p>
+
+<code>
+bash install
+</code>
+
+</div>
+
+
+</body>
+</html>
