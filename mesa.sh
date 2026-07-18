@@ -1,5 +1,10 @@
 #!/bin/bash
 
+export PATH=$HOME/ffmpeg/bin:$PATH
+
+export LD_LIBRARY_PATH=$HOME/ffmpeg/lib:$HOME/mesa-install/usr/lib64:$LD_LIBRARY_PATH
+
+
 MESA_PREFIX="$HOME/mesa-install/usr"
 
 export PATH="$MESA_PREFIX/bin:$PATH"
