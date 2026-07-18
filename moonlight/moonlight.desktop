@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Moonlight
 Comment=GameStream client
-Exec=~/mesa.sh /usr/bin/moonlight
+Exec=sh -c '$HOME/mesa.sh /usr/bin/moonlight'
 Icon=moonlight
 Terminal=false
 Type=Application
