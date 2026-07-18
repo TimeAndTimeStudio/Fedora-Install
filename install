@@ -52,7 +52,7 @@ echo
 
 items=(
     "Steam"
-    "Moonlight"
+    "Moonlight Support Amd And Intel"
     "Sunshine"
     "Modrinth App"
     "Intel Media Driver"
@@ -112,8 +112,9 @@ if [ "${selected[1]}" = 1 ]; then
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/moonlight
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/blob/main/moonlight/moonlight.svg
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.desktop
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/blob/main/mesa.sh
 
-    sudo chmod +x moonlight.desktop moonlight
+    sudo chmod +x moonlight.desktop moonlight mesa.sh
     mkdir -p ~/.local/share/applications
     mv moonlight.desktop ~/.local/share/applications/moonlight.desktop
 
@@ -123,10 +124,13 @@ if [ "${selected[1]}" = 1 ]; then
     sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 -y
     sudo dnf install --setopt=install_weak_deps=False qt6-qtdeclarative -y
 
-    wget https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl-shared.tar.xz
-    tar -xvf ffmpeg-master-latest-linux64-gpl-shared.tar.xz
-    rm ffmpeg-master-latest-linux64-gpl-shared.tar.xz
-    mv ffmpeg-master-latest-linux64-gpl-shared ffmpeg
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/ffmpeg.tar.xz
+    tar -xvf ffmpeg.tar.xz
+    rm ffmpeg.tar.xz
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/mesa-install.tar.xz
+    tar -xvf mesa-install.tar.xz
+    rm mesa-install.tar.xz
 fi
 
 
