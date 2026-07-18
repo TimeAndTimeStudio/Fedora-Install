@@ -1,0 +1,44 @@
+sudo dnf install \
+    git \
+    qt6-qtbase-devel \
+    qt6-qtdeclarative-devel \
+    qt6-qtsvg-devel \
+    SDL2-devel \
+    SDL2_ttf-devel \
+    libva-devel \
+    libvdpau-devel \
+    libdrm-devel \
+    opus-devel \
+    openssl-devel \
+    pulseaudio-libs-devel \
+    alsa-lib-devel \
+    wayland-devel \
+    wayland-protocols-devel \
+    vulkan-loader-devel \
+    pkgconf-pkg-config
+
+#!/bin/bash
+
+MESA_PREFIX="$HOME/mesa-install/usr"
+
+export PATH="$MESA_PREFIX/bin:$HOME/ffmpeg/bin:$PATH"
+
+export LD_LIBRARY_PATH="$HOME/ffmpeg/lib:$MESA_PREFIX/lib64:$MESA_PREFIX/lib:$LD_LIBRARY_PATH"
+
+export LIBGL_DRIVERS_PATH="$MESA_PREFIX/lib64/dri"
+
+export LIBVA_DRIVERS_PATH="$MESA_PREFIX/lib64/dri"
+
+export PKG_CONFIG_PATH="$HOME/ffmpeg/lib/pkgconfig:$MESA_PREFIX/lib64/pkgconfig:$MESA_PREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+
+exec "$@"
+
+cd ~
+
+git clone --recursive https://github.com/moonlight-stream/moonlight-qt.git
+
+cd moonlight-qt
+git submodule update --init --recursive
+
+qmake6 moonlight-qt.pro 
+make -j$(nproc)
