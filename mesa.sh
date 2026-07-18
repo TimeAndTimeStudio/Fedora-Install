@@ -1,24 +1,21 @@
 #!/bin/bash
 
-export PATH=$HOME/ffmpeg/bin:$PATH
-
-export LD_LIBRARY_PATH=$HOME/ffmpeg/lib:$HOME/mesa-install/usr/lib64:$LD_LIBRARY_PATH
-
-
 MESA_PREFIX="$HOME/mesa-install/usr"
+FFMPEG_PREFIX="$HOME/ffmpeg"
 
-export PATH="$MESA_PREFIX/bin:$PATH"
+export PATH="$FFMPEG_PREFIX/bin:$MESA_PREFIX/bin:$PATH"
 
-export LD_LIBRARY_PATH="$MESA_PREFIX/lib64:$MESA_PREFIX/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$FFMPEG_PREFIX/lib:$MESA_PREFIX/lib64:$MESA_PREFIX/lib:$LD_LIBRARY_PATH"
 
 export LIBGL_DRIVERS_PATH="$MESA_PREFIX/lib64/dri"
 
 export LIBVA_DRIVERS_PATH="$MESA_PREFIX/lib64/dri"
 
-export VK_ICD_FILENAMES="$MESA_PREFIX/share/vulkan/icd.d/radeon_icd.x86_64.json"
+# ให้ Vulkan หา AMD + Intel ICD เอง
+export VK_DRIVER_FILES="$MESA_PREFIX/share/vulkan/icd.d"
 
 export VDPAU_DRIVER_PATH="$MESA_PREFIX/lib64/vdpau"
 
-export PKG_CONFIG_PATH="$MESA_PREFIX/lib64/pkgconfig:$MESA_PREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$FFMPEG_PREFIX/lib/pkgconfig:$MESA_PREFIX/lib64/pkgconfig:$MESA_PREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
 
 exec "$@"
