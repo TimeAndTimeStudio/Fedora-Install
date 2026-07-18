@@ -66,11 +66,11 @@ for i in "${!items[@]}"; do
 done
 
 echo
-echo "เลือกหลายรายการโดยคั่นด้วยช่องว่าง"
-echo "ตัวอย่าง: 0 1 5"
+echo "Select multiple items separated by spaces"
+echo "Example: 0 1 5"
 echo
 
-read -rp "เลือก: " choices
+read -rp "Select: " choices
 
 for n in $choices; do
     if [[ "$n" =~ ^[0-9]+$ ]] && [ "$n" -lt "${#items[@]}" ]; then
@@ -85,7 +85,7 @@ echo "================================"
 
 if [ "${selected[0]}" = 1 ]; then
     echo "Installing Steam..."
-    sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686
+    sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 -y
     wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
     wget https://github.com/TimeAndTimeStudio/Game-Web-Site/releases/download/icon/icons.tar.xz
     
@@ -117,18 +117,18 @@ if [ "${selected[1]}" = 1 ]; then
     mkdir -p ~/.local/share/applications
     mv moonlight.desktop ~/.local/share/applications/moonlight.desktop
 
-    sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/moonlight.svg
+    sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/app/moonlight.svg
     sudo mv moonlight /usr/bin/moonlight
 
-    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64
-    sudo dnf install --setopt=install_weak_deps=False qt6-qtdeclarative
+    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 -y
+    sudo dnf install --setopt=install_weak_deps=False qt6-qtdeclarative -y
 fi
 
 
 if [ "${selected[2]}" = 1 ]; then
     echo "Installing Sunshine..."
     wget https://github.com/LizardByte/Sunshine/releases/download/v2026.516.143833/Sunshine-2026.516.143833-1.fc44.x86_64.rpm
-    sudo dnf install ./Sunshine-2026.516.143833-1.fc44.x86_64.rpm
+    sudo dnf install ./Sunshine-2026.516.143833-1.fc44.x86_64.rpm -y
     systemctl --user enable --now app-dev.lizardbyte.app.Sunshine.service
     sudo rm Sunshine-2026.516.143833-1.fc44.x86_64.rpm
 fi
@@ -136,20 +136,19 @@ fi
 if [ "${selected[3]}" = 1 ]; then
     echo "Installing Modrinth App..."
     wget https://launcher-files.modrinth.com/versions/0.15.11/linux/Modrinth%20App-0.15.11-1.x86_64.rpm
-    sudo dnf install ./"Modrinth App-0.15.11-1.x86_64.rpm"
+    sudo dnf install ./"Modrinth App-0.15.11-1.x86_64.rpm" -y
     sudo rm "Modrinth App-0.15.11-1.x86_64.rpm"
 fi
 
 if [ "${selected[4]}" = 1 ]; then
     echo "Installing Intel Media Driver..."
-    sudo dnf install libva-intel-media-driver
+    sudo dnf install libva-intel-media-driver -y
 fi
 
 if [ "${selected[5]}" = 1 ]; then
     echo "Installing Brave Origin..."
-    wget https://brave-browser-rpm-release.s3.brave.com/x86_64/brave-browser-1.92.141-1.x86_64.rpm
-    sudo dnf install ./brave-browser-1.92.141-1.x86_64.rpm
-    sudo rm brave-browser-1.92.141-1.x86_64.rpm
+    sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    sudo dnf install brave-origin -y
 fi
 
 echo
