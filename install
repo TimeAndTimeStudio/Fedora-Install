@@ -55,7 +55,7 @@ items=(
     "Moonlight Support Amd And Intel"
     "Sunshine"
     "Modrinth App"
-    "Intel Media Driver"
+    "Intel Media Driver Install If Use Moonlight"
     "Brave Browser"
 )
 
@@ -110,7 +110,7 @@ fi
 if [ "${selected[1]}" = 1 ]; then
     echo "Installing Moonlight..."
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/moonlight
-    wget https://github.com/TimeAndTimeStudio/Fedora-Install/blob/main/moonlight/moonlight.svg
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.svg
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.desktop
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/mesa.sh
 
