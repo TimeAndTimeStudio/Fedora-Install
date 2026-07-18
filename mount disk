@@ -1,3 +1,1 @@
-sudo nano /etc/fstab
-sudo mkdir -p /mnt/Game
 echo "UUID=f37f6f6b-68a8-4d20-b2ba-83829dafcad6 /mnt/Game ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
