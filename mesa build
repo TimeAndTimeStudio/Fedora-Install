@@ -35,7 +35,9 @@ sudo dnf install -y \
     libxshmfence-devel \
     libzstd-devel \
     expat-devel \
-    zlib-devel
+    zlib-devel \
+    libclc-devel \
+    spirv-llvm-translator-devel
 
 
 cd ~
@@ -49,8 +51,8 @@ git checkout mesa-26.1.5
 meson setup build \
     --prefix=/usr \
     --buildtype=release \
-    -Dgallium-drivers=radeonsi \
-    -Dvulkan-drivers=amd \
+    -Dgallium-drivers=radeonsi,iris \
+    -Dvulkan-drivers=amd,intel \
     -Dvideo-codecs=all
 
 ninja -C build -j$(nproc)
