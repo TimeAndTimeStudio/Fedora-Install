@@ -55,12 +55,11 @@ items=(
     "Moonlight Support Amd And Intel"
     "Sunshine"
     "Modrinth App"
-    "Intel Media Driver Install If Use Moonlight"
     "Brave Origin"
     "WireGuard"
 )
 
-selected=(0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -152,17 +151,12 @@ if [ "${selected[3]}" = 1 ]; then
 fi
 
 if [ "${selected[4]}" = 1 ]; then
-    echo "Installing Intel Media Driver..."
-    sudo dnf install libva-intel-media-driver -y
-fi
-
-if [ "${selected[5]}" = 1 ]; then
     echo "Installing Brave Origin..."
     sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
     sudo dnf install brave-origin -y
 fi
 
-if [ "${selected[6]}" = 1 ]; then
+if [ "${selected[5]}" = 1 ]; then
     echo "Installing WireGuard..."
     sudo dnf install wireguard-tools -y
 fi
