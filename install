@@ -112,7 +112,7 @@ if [ "${selected[1]}" = 1 ]; then
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/moonlight
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/blob/main/moonlight/moonlight.svg
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.desktop
-    wget https://github.com/TimeAndTimeStudio/Fedora-Install/blob/main/mesa.sh
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/mesa.sh
 
     sudo chmod +x moonlight.desktop moonlight mesa.sh
     mkdir -p ~/.local/share/applications
