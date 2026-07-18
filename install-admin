@@ -1,1 +1,174 @@
+#!/usr/bin/env bash
 
+set -e
+
+# ==============================
+# Fedora Minimal GNOME Setup
+# ==============================
+
+echo "================================"
+echo " Installing GNOME base system"
+echo "================================"
+
+sudo dnf install -y \
+    gdm \
+    gnome-terminal \
+    nautilus \
+    google-noto-sans-thai-fonts \
+    google-noto-sans-cjk-fonts \
+    tar \
+    wireguard-tools \
+    nss-mdns \
+    google-noto-serif-cjk-fonts \
+    google-noto-serif-thai-fonts
+
+
+echo
+echo "================================"
+echo " Removing unnecessary packages"
+echo "================================"
+
+sudo dnf remove -y \
+    gnome-tour \
+    malcontent-control \
+    gnome-remote-desktop
+
+
+echo
+echo "================================"
+echo " Configure Plymouth"
+echo "================================"
+
+sudo dnf install -y plymouth-system-theme
+
+sudo plymouth-set-default-theme -R bgrt
+
+echo
+echo "================================"
+echo " Optional Applications"
+echo "================================"
+echo
+
+
+items=(
+    "Steam"
+    "Moonlight Support Amd And Intel"
+    "Sunshine"
+    "Modrinth App"
+    "Intel Media Driver Install If Use Moonlight"
+    "Brave Browser"
+)
+
+selected=(0 0 0 0 0 0)
+
+for i in "${!items[@]}"; do
+    echo "$i) ${items[$i]}"
+done
+
+echo
+echo "Select multiple items separated by spaces"
+echo "Example: 0 1 5"
+echo
+
+read -rp "Select: " choices
+
+for n in $choices; do
+    if [[ "$n" =~ ^[0-9]+$ ]] && [ "$n" -lt "${#items[@]}" ]; then
+        selected[$n]=1
+    fi
+done
+
+echo "================================"
+echo " Installing selected apps"
+echo "================================"
+
+
+if [ "${selected[0]}" = 1 ]; then
+    echo "Installing Steam..."
+    sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 -y
+    wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
+    wget https://github.com/TimeAndTimeStudio/Game-Web-Site/releases/download/icon/icons.tar.xz
+    
+    tar -xvf steam_latest-stable.tar.gz
+    cd steam-launcher
+    sudo rm steam
+    sudo mv bin_steam.sh steam
+    sudo mv steam /usr/bin/
+    mkdir -p ~/.local/share/applications
+    mv steam.desktop ~/.local/share/applications/steam.desktop
+    chmod +x ~/.local/share/applications/steam.desktop
+    sudo mkdir /usr/lib/steam
+    sudo mv bootstraplinux_ubuntu12_32.tar.xz /usr/lib/steam/
+    cd ../
+    tar -xvf icons.tar.xz
+    sudo cp -r icons/* /usr/share/icons/hicolor/
+    sudo rm icons.tar.xz steam_latest-stable.tar.gz
+    sudo rm -r steam-launcher icons
+fi
+
+
+if [ "${selected[1]}" = 1 ]; then
+    echo "Installing Moonlight..."
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/moonlight
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.svg
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.desktop
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/mesa.sh
+
+    sudo chmod +x moonlight.desktop moonlight mesa.sh
+    mkdir -p ~/.local/share/applications
+    mv moonlight.desktop ~/.local/share/applications/moonlight.desktop
+    sudo mv mesa.sh /usr/bin/mesa.sh
+
+    sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/apps/moonlight.svg
+    sudo mv moonlight /usr/bin/moonlight
+
+    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 -y
+    sudo dnf install --setopt=install_weak_deps=False qt6-qtdeclarative -y
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/ffmpeg.tar.xz
+    tar -xvf ffmpeg.tar.xz
+    rm ffmpeg.tar.xz
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/mesa-install.tar.xz
+    tar -xvf mesa-install.tar.xz
+    rm mesa-install.tar.xz
+fi
+
+
+if [ "${selected[2]}" = 1 ]; then
+    echo "Installing Sunshine..."
+    wget https://github.com/LizardByte/Sunshine/releases/download/v2026.516.143833/Sunshine-2026.516.143833-1.fc44.x86_64.rpm
+    sudo dnf install ./Sunshine-2026.516.143833-1.fc44.x86_64.rpm -y
+    systemctl --user enable --now app-dev.lizardbyte.app.Sunshine.service
+    sudo rm Sunshine-2026.516.143833-1.fc44.x86_64.rpm
+fi
+
+if [ "${selected[3]}" = 1 ]; then
+    echo "Installing Modrinth App..."
+    wget https://launcher-files.modrinth.com/versions/0.15.11/linux/Modrinth%20App-0.15.11-1.x86_64.rpm
+    sudo dnf install ./"Modrinth App-0.15.11-1.x86_64.rpm" -y
+    sudo rm "Modrinth App-0.15.11-1.x86_64.rpm"
+fi
+
+if [ "${selected[4]}" = 1 ]; then
+    echo "Installing Intel Media Driver..."
+    sudo dnf install libva-intel-media-driver -y
+fi
+
+if [ "${selected[5]}" = 1 ]; then
+    echo "Installing Brave Origin..."
+    sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    sudo dnf install brave-origin -y
+fi
+
+echo
+echo "================================"
+echo " Enable GNOME Login"
+echo "================================"
+
+sudo systemctl set-default graphical.target
+sudo sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
+sudo sed -i '1i GRUB_TIMEOUT_STYLE=hidden' /etc/default/grub
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+sudo rm install
+sudo reboot now
