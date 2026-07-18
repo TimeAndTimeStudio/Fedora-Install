@@ -169,7 +169,7 @@ if [ "${selected[1]}" = 1 ]; then
     echo "Installing Moonlight..."
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/moonlight
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/blob/main/moonlight/moonlight.svg
-    wget https://github.com/TimeAndTimeStudio/Fedora-Install/blob/main/moonlight/moonlight.desktop
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.desktop
 
     sudo chmod +x moonlight.desktop moonlight
     mkdir ~/.local/share/applications
