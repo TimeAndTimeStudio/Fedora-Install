@@ -1,0 +1,7 @@
+sudo dnf install git cmake gcc-c++ make -y
+git clone https://github.com/intel/gmmlib.git
+cd gmmlib
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j"$(nproc)"
