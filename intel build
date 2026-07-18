@@ -6,7 +6,7 @@ cd build_media
 
 cmake ../media-driver \
   -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-  -DCMAKE_C_FLAGS="-Wno-error=dangling-pointer" \
-  -DCMAKE_CXX_FLAGS="-Wno-error=dangling-pointer"
+  -DCMAKE_C_FLAGS="-Wno-error=dangling-pointer -Wno-error=array-bounds" \
+  -DCMAKE_CXX_FLAGS="-Wno-error=dangling-pointer -Wno-error=array-bounds"
 
 make -j$(nproc)
