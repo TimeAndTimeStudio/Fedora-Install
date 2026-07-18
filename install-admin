@@ -17,7 +17,6 @@ sudo dnf install -y \
     google-noto-sans-thai-fonts \
     google-noto-sans-cjk-fonts \
     tar \
-    wireguard-tools \
     nss-mdns \
     google-noto-serif-cjk-fonts \
     google-noto-serif-thai-fonts
