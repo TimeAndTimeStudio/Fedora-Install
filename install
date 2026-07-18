@@ -59,7 +59,7 @@ items=(
     "Remove REPO"
 )
 
-selected=(0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
