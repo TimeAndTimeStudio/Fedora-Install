@@ -153,7 +153,7 @@ fi
 
 if [ "${selected[9]}" = 1 ]; then
     echo "Installing Arduino..."
-    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/steam/icons.tar.xz
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/icons.tar.xz
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/arduino.desktop
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/arduino.tar.xz
 
