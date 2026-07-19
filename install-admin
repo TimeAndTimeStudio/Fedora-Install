@@ -23,9 +23,10 @@ items=(
     "Remove REPO"
     "Wallpaper"
     "VS Code"
+    "Arduino"
 )
 
-selected=(0 0 0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -147,6 +148,25 @@ if [ "${selected[8]}" = 1 ]; then
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/code-1.129.1-1784303689.el8.x86_64.rpm
     sudo dnf install ./code-1.129.1-1784303689.el8.x86_64.rpm
     sudo rm code-1.129.1-1784303689.el8.x86_64.rpm
+fi
+
+
+if [ "${selected[9]}" = 1 ]; then
+    echo "Installing Arduino..."
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/steam/icons.tar.xz
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/arduino.desktop
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/arduino.tar.xz
+
+    sudo chmod +x arduino.desktop
+    mkdir -p ~/.local/share/applications
+    mv arduino.desktop ~/.local/share/applications/arduino.desktop
+    tar -xvf arduino.tar.xz
+    sudo mv arduino /opt/
+
+    tar -xvf icons.tar.xz
+    sudo cp -r icons/* /usr/share/icons/hicolor/
+    sudo rm icons.tar.xz arduino.tar.xz
+    sudo rm -r icons
 fi
 
 echo "================================"
