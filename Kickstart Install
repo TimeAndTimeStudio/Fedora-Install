@@ -1,0 +1,5 @@
+sudo dnf install lorax
+sudo mkksiso \
+~/ks.cfg \
+~/Downloads/Fedora-Everything-netinst-x86_64-44-1.7.iso \
+~/Fedora-custom.iso
