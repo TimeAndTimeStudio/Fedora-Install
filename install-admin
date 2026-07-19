@@ -51,7 +51,6 @@ echo "================================"
 
 if [ "${selected[6]}" = 1 ]; then
     echo "Installing Remove REPO..."
-    sudo rm /etc/yum.repos.d/fedora-cisco-openh264.repo
     sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
     sudo dnf clean all
     sudo dnf makecache
@@ -62,7 +61,7 @@ if [ "${selected[0]}" = 1 ]; then
     echo "Installing Steam..."
     sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 -y
     wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
-    wget https://github.com/TimeAndTimeStudio/Game-Web-Site/releases/download/icon/icons.tar.xz
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/steam/icons.tar.xz
     
     tar -xvf steam_latest-stable.tar.gz
     cd steam-launcher
