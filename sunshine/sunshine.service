@@ -1,0 +1,11 @@
+[Unit]
+Description=Sunshine GameStream Host
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/mesa.sh /usr/bin/sunshine
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
