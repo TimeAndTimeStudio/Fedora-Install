@@ -1,27 +1,71 @@
-sudo dnf install libcurl-devel
-sudo dnf install gcc gcc-c++ cmake ninja-build
-sudo dnf install miniupnpc-devel
-sudo dnf install libdrm-devel
-sudo dnf install libva-devel
-sudo dnf install vulkan-loader-devel
-sudo dnf install glslang
-sudo dnf install libX11-devel
-sudo dnf install glib2-devel
-sudo dnf install pipewire-devel
-sudo dnf install libayatana-appindicator-gtk3-devel libnotify-devel
-sudo dnf install opus-devel npm
-sudo dnf install libevdev-devel
-sudo dnf install libgbm-devel
-sudo dnf install pulseaudio-libs-devel
+sudo dnf install \
+    gcc gcc-c++ git cmake ninja-build \
+    boost-devel openssl-devel libcurl-devel \
+    miniupnpc-devel \
+    libdrm-devel libgbm-devel libva-devel libva-utils \
+    vulkan-loader-devel glslang \
+    glib2-devel \
+    pipewire-devel pulseaudio-libs-devel \
+    opus-devel \
+    libnotify-devel libayatana-appindicator-gtk3-devel \
+    libevdev-devel \
+    libcap-devel libuuid-devel numactl-devel \
+    libX11-devel libXtst-devel libXrandr-devel \
+    libXfixes-devel libXinerama-devel libXcursor-devel \
+    libXi-devel libXext-devel libxcb-devel \
+    wayland-devel wayland-protocols-devel libdecor-devel \
+    nodejs
 
+sudo dnf install \
+    appstream \
+    cmake \
+    desktop-file-utils \
+    doxygen \
+    gcc gcc-c++ \
+    git \
+    glslc \
+    graphviz \
+    libappstream-glib \
+    libcap-devel \
+    libcurl-devel \
+    libdrm-devel \
+    libevdev-devel \
+    libnotify-devel \
+    libX11-devel \
+    libxcb-devel \
+    libXcursor-devel \
+    libXfixes-devel \
+    libXi-devel \
+    libXinerama-devel \
+    libXrandr-devel \
+    libXtst-devel \
+    mesa-libGL-devel \
+    mesa-libgbm-devel \
+    miniupnpc-devel \
+    ninja-build \
+    npm \
+    numactl-devel \
+    openssl-devel \
+    opus-devel \
+    pipewire-devel \
+    pulseaudio-libs-devel \
+    python3-jinja2 \
+    qt6-qtbase-devel \
+    qt6-qtsvg-devel \
+    rpm-build \
+    vulkan-loader-devel \
+    wget \
+    which \
+    xorg-x11-server-Xvfb \
+    libva-devel
 
 git clone https://github.com/lizardbyte/sunshine.git
 cd sunshine
 
-git checkout
+git checkout v2026.516.143833
 git submodule update --init --recursive
 grep CMAKE_BUILD_TYPE build/CMakeCache.txt
 
 
-cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF
+cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF   -DCMAKE_PREFIX_PATH="$HOME/mesa-install/usr;$HOME/ffmpeg"
 ninja -C build
