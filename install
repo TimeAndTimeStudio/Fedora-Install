@@ -50,7 +50,6 @@ echo "================================"
 
 if [ "${selected[6]}" = 1 ]; then
     echo "Installing Remove REPO..."
-    sudo rm /etc/yum.repos.d/fedora-cisco-openh264.repo
     sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
     sudo dnf clean all
     sudo dnf makecache
