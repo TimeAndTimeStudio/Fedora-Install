@@ -17,6 +17,7 @@ git clone https://github.com/lizardbyte/sunshine.git
 cd sunshine
 
 git checkout
+git submodule update --init --recursive
 grep CMAKE_BUILD_TYPE build/CMakeCache.txt
 
 
