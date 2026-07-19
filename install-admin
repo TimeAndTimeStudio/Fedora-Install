@@ -53,7 +53,7 @@ if [ "${selected[6]}" = 1 ]; then
     sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
     sudo dnf clean all
     sudo dnf makecache
-    sudo dnf update
+    sudo dnf update -y
 fi
 
 if [ "${selected[0]}" = 1 ]; then
