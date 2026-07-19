@@ -59,6 +59,30 @@ sudo dnf install \
     xorg-x11-server-Xvfb \
     libva-devel
 
+sudo dnf install \
+    opus-devel \
+    pulseaudio-libs-devel \
+    cmake \
+    git \
+    libayatana-appindicator-gtk3-devel \
+    libevdev-devel \
+    libnotify-devel \
+    ninja-build \
+    pkgconf-pkg-config \
+    libcurl-devel \
+    libdrm-devel \
+    wayland-devel \
+    libva-devel \
+    miniupnpc-devel \
+    openssl-devel \
+    bash \
+    npm \
+    libX11-devel \
+    libxcb-devel \
+    libXfixes-devel \
+    libXrandr-devel \
+    libXtst-devel
+
 git clone https://github.com/lizardbyte/sunshine.git
 cd sunshine
 
@@ -67,5 +91,5 @@ git submodule update --init --recursive
 grep CMAKE_BUILD_TYPE build/CMakeCache.txt
 
 
-cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF   -DCMAKE_PREFIX_PATH="$HOME/mesa-install/usr;$HOME/ffmpeg"
+cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF -DSUNSHINE_ENABLE_DRM=OFF -DSUNSHINE_ENABLE_KWIN=OFF -DSUNSHINE_ENABLE_X11=OFF -DSUNSHINE_ENABLE_TRAY=OFF -DBUILD_TESTS=OFF -DSUNSHINE_ENABLE_TRAY=OFF -DCMAKE_PREFIX_PATH="$HOME/mesa-install/usr;$HOME/ffmpeg"
 ninja -C build
