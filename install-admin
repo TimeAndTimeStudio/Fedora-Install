@@ -123,6 +123,19 @@ if [ "${selected[2]}" = 1 ]; then
     
     sudo firewall-cmd --permanent --add-port=47998-48000/udp
     sudo firewall-cmd --reload
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/mesa.sh
+
+    sudo chmod +x mesa.sh
+    sudo mv mesa.sh /usr/bin/mesa.sh
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/ffmpeg.tar.xz
+    tar -xvf ffmpeg.tar.xz
+    rm ffmpeg.tar.xz
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/mesa-install.tar.xz
+    tar -xvf mesa-install.tar.xz
+    rm mesa-install.tar.xz
 fi
 
 if [ "${selected[3]}" = 1 ]; then
