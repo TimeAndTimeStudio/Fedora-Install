@@ -130,7 +130,7 @@ if [ "${selected[2]}" = 1 ]; then
 
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/mesa
 
-    sudo chmod +x mesa.sh
+    sudo chmod +x mesa
     sudo mv mesa /usr/local/bin/mesa
 
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/mesa-install.tar.xz
