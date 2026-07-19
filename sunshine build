@@ -92,7 +92,7 @@ grep CMAKE_BUILD_TYPE build/CMakeCache.txt
 
 
 cmake -B build -G Ninja -S . \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DSUNSHINE_BUILD_APPIMAGE=ON \
     -DBUILD_TESTS=OFF \
     -DSUNSHINE_ENABLE_CUDA=OFF \
     -DSUNSHINE_ENABLE_KWIN=OFF \
