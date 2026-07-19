@@ -6,4 +6,4 @@ Icon=arduino
 Terminal=false
 Type=Application
 Categories=Development;
-StartupWMClass="arduino ide"
+StartupWMClass=arduino ide
