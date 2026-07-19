@@ -115,6 +115,12 @@ if [ "${selected[2]}" = 1 ]; then
     sudo chmod +x sunshine.AppImage
     sudo mv sunshine.AppImage /usr/bin/sunshine
 
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/sunshine/sunshine.service
+    mv sunshine.service ~/.config/systemd/user/sunshine.service
+
+    systemctl --user daemon-reload
+    systemctl --user enable sunshine.service
+
     sudo firewall-cmd --permanent --add-port=47984/tcp
     sudo firewall-cmd --permanent --add-port=47989/tcp
     sudo firewall-cmd --permanent --add-port=47990/tcp
