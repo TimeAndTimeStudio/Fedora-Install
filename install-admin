@@ -47,6 +47,14 @@ echo "================================"
 echo " Installing selected apps"
 echo "================================"
 
+if [ "${selected[6]}" = 1 ]; then
+    echo "Installing Remove REPO..."
+    sudo rm /etc/yum.repos.d/fedora-cisco-openh264.repo
+    sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
+    sudo dnf clean all
+    sudo dnf makecache
+    sudo dnf update
+fi
 
 if [ "${selected[0]}" = 1 ]; then
     echo "Installing Steam..."
@@ -124,15 +132,6 @@ fi
 if [ "${selected[5]}" = 1 ]; then
     echo "Installing WireGuard..."
     sudo dnf install wireguard-tools -y
-fi
-
-if [ "${selected[6]}" = 1 ]; then
-    echo "Installing Remove REPO..."
-    sudo rm /etc/yum.repos.d/fedora-cisco-openh264.repo
-    sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
-    sudo dnf clean all
-    sudo dnf makecache
-    sudo dnf install update
 fi
 
 if [ "${selected[7]}" = 1 ]; then
