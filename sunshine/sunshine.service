@@ -4,7 +4,7 @@ After=graphical-session.target
 Wants=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/mesa.sh /usr/bin/sunshine
+ExecStart=/usr/local/bin/mesa /usr/bin/local/sunshine
 Restart=on-failure
 
 [Install]
