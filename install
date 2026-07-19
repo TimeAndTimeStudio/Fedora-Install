@@ -21,9 +21,10 @@ items=(
     "Brave Origin"
     "WireGuard"
     "Remove REPO"
+    "VS Code"
 )
 
-selected=(0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -131,6 +132,13 @@ fi
 if [ "${selected[5]}" = 1 ]; then
     echo "Installing WireGuard..."
     sudo dnf install wireguard-tools -y
+fi
+
+if [ "${selected[7]}" = 1 ]; then
+    echo "Installing VS Code..."
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/code-1.129.1-1784303689.el8.x86_64.rpm
+    sudo dnf install ./code-1.129.1-1784303689.el8.x86_64.rpm
+    sudo rm code-1.129.1-1784303689.el8.x86_64.rpm
 fi
 
 echo "================================"
