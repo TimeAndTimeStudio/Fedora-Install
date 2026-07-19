@@ -1,0 +1,22 @@
+sudo dnf install libcurl-devel
+sudo dnf install gcc gcc-c++ cmake ninja-build
+sudo dnf install miniupnpc-devel
+sudo dnf install libdrm-devel
+sudo dnf install libva-devel
+sudo dnf install vulkan-loader-devel
+sudo dnf install glslang
+sudo dnf install libX11-devel
+sudo dnf install glib2-devel
+sudo dnf install pipewire-devel
+sudo dnf install libayatana-appindicator-gtk3-devel libnotify-devel
+sudo dnf install opus-devel npm
+sudo dnf install libevdev-devel
+
+
+git clone https://github.com/lizardbyte/sunshine.git
+cd sunshine
+grep CMAKE_BUILD_TYPE build/CMakeCache.txt
+
+
+cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF
+ninja -C build
