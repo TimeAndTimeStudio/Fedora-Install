@@ -114,6 +114,14 @@ if [ "${selected[2]}" = 1 ]; then
     sudo chmod +x sunshine.AppImage
     sudo mv sunshine.AppImage /usr/local/bin/sunshine
 
+    sudo usermod -aG input $USER
+
+    sudo wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/sunshine/uinput.rules
+    sudo mv uinput.rules /etc/udev/rules.d/uinput.rules
+
+    sudo udevadm control --reload-rules
+    sudo udevadm trigger /dev/uinput
+
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/sunshine/sunshine.service
     mkdir -p ~/.config/systemd/user/
     mv sunshine.service ~/.config/systemd/user/sunshine.service
