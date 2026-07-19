@@ -17,3 +17,25 @@ ls -l /dev/uinput
 crw-rw---- 1 root input ...
 
 หมายเหตุ: วิธีนี้เป็นแค่ชั่วคราว เพราะ /dev/uinput ถูกสร้างใหม่ทุกครั้งที่บูตหรือโหลดโมดูล uinput ใหม่ สิทธิ์จะกลับเป็นค่าเดิม จึงควรใช้ udev rule เพื่อให้เปลี่ยนให้อัตโนมัติทุกครั้งที่อุปกรณ์ถูกสร้างใหม่.
+
+
+สร้างไฟล์:
+
+sudo nano /etc/udev/rules.d/70-uinput.rules
+
+ใส่:
+
+KERNEL=="uinput", GROUP="input", MODE="0660"
+
+โหลด rule ใหม่:
+
+sudo udevadm control --reload-rules
+sudo udevadm trigger /dev/uinput
+
+ตรวจ:
+
+ls -l /dev/uinput
+
+ควรได้:
+
+crw-rw----. 1 root input 10, 223 /dev/uinput
