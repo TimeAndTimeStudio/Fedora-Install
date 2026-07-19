@@ -11,6 +11,8 @@ sudo dnf install pipewire-devel
 sudo dnf install libayatana-appindicator-gtk3-devel libnotify-devel
 sudo dnf install opus-devel npm
 sudo dnf install libevdev-devel
+sudo dnf install libgbm-devel
+sudo dnf install pulseaudio-libs-devel
 
 
 git clone https://github.com/lizardbyte/sunshine.git
