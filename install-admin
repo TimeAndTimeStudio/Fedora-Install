@@ -22,9 +22,10 @@ items=(
     "WireGuard"
     "Remove REPO"
     "Wallpaper"
+    "VS Code"
 )
 
-selected=(0 0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -138,6 +139,14 @@ if [ "${selected[7]}" = 1 ]; then
     echo "Installing Wallpaper..."
     wget https://raw.githubusercontent.com/TimeAndTimeStudio/Game-Web-Site/refs/heads/main/019b913a-a484-7237-b907-2444e37e22e2.png
     wget https://raw.githubusercontent.com/TimeAndTimeStudio/Game-Web-Site/refs/heads/main/horizontal%20pic.jpg
+fi
+
+
+if [ "${selected[8]}" = 1 ]; then
+    echo "Installing VS Code..."
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/code-1.129.1-1784303689.el8.x86_64.rpm
+    sudo dnf install ./code-1.129.1-1784303689.el8.x86_64.rpm
+    sudo rm code-1.129.1-1784303689.el8.x86_64.rpm
 fi
 
 echo "================================"
