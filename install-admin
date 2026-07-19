@@ -59,7 +59,7 @@ fi
 
 if [ "${selected[0]}" = 1 ]; then
     echo "Installing Steam..."
-    sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 -y
+    sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 tar -y
     wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/steam/icons.tar.xz
     
@@ -96,7 +96,7 @@ if [ "${selected[1]}" = 1 ]; then
     sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/apps/moonlight.svg
     sudo mv moonlight /usr/bin/moonlight
 
-    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 -y
+    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 tar -y
     sudo dnf install --setopt=install_weak_deps=False qt6-qtdeclarative -y
 
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/ffmpeg.tar.xz
@@ -160,6 +160,7 @@ fi
 
 if [ "${selected[9]}" = 1 ]; then
     echo "Installing Arduino..."
+    sudo dnf install tar -y
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/icons.tar.xz
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/arduino.desktop
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/arduino.tar.xz
