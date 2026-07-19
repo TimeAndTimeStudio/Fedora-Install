@@ -116,6 +116,14 @@ if [ "${selected[2]}" = 1 ]; then
     sudo dnf install ./Sunshine-2026.516.143833-1.fc44.x86_64.rpm -y
     systemctl --user enable --now app-dev.lizardbyte.app.Sunshine.service
     sudo rm Sunshine-2026.516.143833-1.fc44.x86_64.rpm
+
+    sudo firewall-cmd --permanent --add-port=47984/tcp
+    sudo firewall-cmd --permanent --add-port=47989/tcp
+    sudo firewall-cmd --permanent --add-port=47990/tcp
+    sudo firewall-cmd --permanent --add-port=48010/tcp
+    
+    sudo firewall-cmd --permanent --add-port=47998-48000/udp
+    sudo firewall-cmd --reload
 fi
 
 if [ "${selected[3]}" = 1 ]; then
