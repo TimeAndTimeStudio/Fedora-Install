@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Arduino
 Comment=Arduino IDE
-Exec=arduino
+Exec=/usr/bin/arduino/arduino-ide
 Icon=arduino
 Terminal=false
 Type=Application
