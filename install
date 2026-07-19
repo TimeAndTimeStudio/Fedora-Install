@@ -6,42 +6,6 @@ set -e
 # Fedora Minimal GNOME Setup
 # ==============================
 
-echo "================================"
-echo " Installing GNOME base system"
-echo "================================"
-
-sudo dnf install -y \
-    gdm \
-    gnome-terminal \
-    nautilus \
-    google-noto-sans-thai-fonts \
-    google-noto-sans-cjk-fonts \
-    tar \
-    nss-mdns \
-    google-noto-serif-cjk-fonts \
-    google-noto-serif-thai-fonts
-
-
-echo
-echo "================================"
-echo " Removing unnecessary packages"
-echo "================================"
-
-sudo dnf remove -y \
-    gnome-tour \
-    malcontent-control \
-    gnome-remote-desktop
-
-
-echo
-echo "================================"
-echo " Configure Plymouth"
-echo "================================"
-
-sudo dnf install -y plymouth-system-theme
-
-sudo plymouth-set-default-theme -R bgrt
-
 echo
 echo "================================"
 echo " Optional Applications"
@@ -161,13 +125,49 @@ if [ "${selected[5]}" = 1 ]; then
     sudo dnf install wireguard-tools -y
 fi
 
-if [ "${selected[6}" = 1 ]; then
+if [ "${selected[6]}" = 1 ]; then
     echo "Installing Remove REPO..."
     sudo rm /etc/yum.repos.d/fedora-cisco-openh264.repo
     sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
     sudo dnf clean all
     sudo dnf makecache
 fi
+
+echo "================================"
+echo " Installing GNOME base system"
+echo "================================"
+
+sudo dnf install -y \
+    gdm \
+    gnome-terminal \
+    nautilus \
+    google-noto-sans-thai-fonts \
+    google-noto-sans-cjk-fonts \
+    tar \
+    nss-mdns \
+    google-noto-serif-cjk-fonts \
+    google-noto-serif-thai-fonts
+
+
+echo
+echo "================================"
+echo " Removing unnecessary packages"
+echo "================================"
+
+sudo dnf remove -y \
+    gnome-tour \
+    malcontent-control \
+    gnome-remote-desktop
+
+
+echo
+echo "================================"
+echo " Configure Plymouth"
+echo "================================"
+
+sudo dnf install -y plymouth-system-theme
+
+sudo plymouth-set-default-theme -R bgrt
 
 echo
 echo "================================"
