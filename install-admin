@@ -116,6 +116,7 @@ if [ "${selected[2]}" = 1 ]; then
     sudo mv sunshine.AppImage /usr/local/bin/sunshine
 
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/sunshine/sunshine.service
+    mkdir -p ~/.config/systemd/user/
     mv sunshine.service ~/.config/systemd/user/sunshine.service
 
     systemctl --user daemon-reload
