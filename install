@@ -22,9 +22,10 @@ items=(
     "WireGuard"
     "Remove REPO"
     "VS Code"
+    "Arduino"
 )
 
-selected=(0 0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -139,6 +140,20 @@ if [ "${selected[7]}" = 1 ]; then
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/code-1.129.1-1784303689.el8.x86_64.rpm
     sudo dnf install ./code-1.129.1-1784303689.el8.x86_64.rpm
     sudo rm code-1.129.1-1784303689.el8.x86_64.rpm
+fi
+
+if [ "${selected[8]}" = 1 ]; then
+    echo "Installing Arduino..."
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/512x512.png
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/arduino.desktop
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/arduino-ide_2.3.10_Linux_64bit.AppImage
+
+    sudo chmod +x arduino-ide_2.3.10_Linux_64bit.AppImage arduino.desktop
+    mkdir -p ~/.local/share/applications
+    mv arduino.desktop ~/.local/share/applications/arduino.desktop
+    sudo mv arduino-ide_2.3.10_Linux_64bit.AppImage /usr/bin/arduino
+
+    sudo mv 512x512.png /usr/share/icons/hicolor/512x512/apps/arduino.png
 fi
 
 echo "================================"
