@@ -8,3 +8,4 @@ meson setup build \
     --libdir=lib64
 
 ninja -C build
+sudo ninja -C build install
