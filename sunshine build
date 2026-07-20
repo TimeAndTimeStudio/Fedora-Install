@@ -5,8 +5,8 @@ sudo dnf install -y \
     cmake \
     desktop-file-utils \
     doxygen \
-    gcc14 \
-    gcc14-c++ \
+    gcc \
+    gcc-c++ \
     git \
     glslc \
     graphviz \
