@@ -1,0 +1,10 @@
+sudo dnf install \
+    meson ninja-build gcc gcc-c++ \
+    pkgconf-pkg-config libdrm-devel
+
+git checkout 2.24.1
+meson setup build \
+    --prefix=/opt/mesa-install/usr \
+    --libdir=lib64
+
+ninja -C build
