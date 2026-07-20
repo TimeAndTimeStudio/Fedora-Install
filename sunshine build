@@ -42,7 +42,8 @@ sudo dnf install -y \
     wget \
     which \
     xorg-x11-server-Xvfb \
-    libva-devel
+    libva-devel \
+    libappindicator-gtk3-devel
 
 
 git clone https://github.com/lizardbyte/sunshine.git
