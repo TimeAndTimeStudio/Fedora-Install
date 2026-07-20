@@ -55,3 +55,6 @@ mkdir build
 
 cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF
 ninja -C build
+
+sudo mkdir -p /usr/share/sunshine
+sudo cp -r sunshine/* /usr/share/sunshine/
