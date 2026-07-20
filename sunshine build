@@ -1,0 +1,55 @@
+sudo dnf group install -y "development-tools"
+
+sudo dnf install -y \
+    appstream \
+    cmake \
+    desktop-file-utils \
+    doxygen \
+    gcc14 \
+    gcc14-c++ \
+    git \
+    glslc \
+    graphviz \
+    libappstream-glib \
+    libcap-devel \
+    libcurl-devel \
+    libdrm-devel \
+    libevdev-devel \
+    libnotify-devel \
+    libX11-devel \
+    libxcb-devel \
+    libXcursor-devel \
+    libXfixes-devel \
+    libXi-devel \
+    libXinerama-devel \
+    libXrandr-devel \
+    libXtst-devel \
+    mesa-libGL-devel \
+    mesa-libgbm-devel \
+    miniupnpc-devel \
+    ninja-build \
+    npm \
+    numactl-devel \
+    openssl-devel \
+    opus-devel \
+    pipewire-devel \
+    pulseaudio-libs-devel \
+    python3-jinja2 \
+    qt6-qtbase-devel \
+    qt6-qtsvg-devel \
+    rpm-build \
+    vulkan-loader-devel \
+    wget \
+    which \
+    xorg-x11-server-Xvfb \
+    libva-devel
+
+
+git clone https://github.com/lizardbyte/sunshine.git
+cd sunshine
+git checkout v2026.516.143833
+git submodule update --init --recursive
+mkdir build
+
+cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF
+ninja -C build
