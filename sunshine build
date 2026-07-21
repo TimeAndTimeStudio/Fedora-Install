@@ -56,7 +56,14 @@ mkdir build
 export BUILD_VERSION=2026.516.143833
 export BRANCH=master
 cmake -B build -G Ninja -S . \
+  -DBUILD_DOCS=OFF \
+  -DBUILD_TESTS=OFF \
+  -DSUNSHINE_ENABLE_TRAY=OFF \
   -DSUNSHINE_ENABLE_CUDA=OFF \
+  -DCUDA_FAIL_ON_MISSING=OFF \
+  -DCUDA_INHERIT_COMPILE_OPTIONS=OFF \
+  -DSUNSHINE_ENABLE_VULKAN=OFF \
+  -DSUNSHINE_ENABLE_KWIN=OFF \
   -DCMAKE_PREFIX_PATH=/opt/mesa/usr \
   -DVulkan_LIBRARY=/opt/mesa/usr/lib64/libvulkan.so \
   -DVulkan_INCLUDE_DIR=/opt/mesa/usr/include
