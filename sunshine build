@@ -53,7 +53,7 @@ git checkout v2026.516.143833
 git submodule update --init --recursive
 mkdir build
 
-cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF -DCMAKE_PREFIX_PATH="/opt/ffmpeg;/opt/mesa-install/usr" -DCMAKE_BUILD_RPATH="/opt/ffmpeg/lib;/opt/mesa-install/usr/lib64" -DCMAKE_INSTALL_RPATH="/opt/ffmpeg/lib;/opt/mesa-install/usr/lib64" -DCMAKE_BUILD_TYPE=Release -DSUNSHINE_VERSION="2026.516.143833"
+cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF
 ninja -C build
 
 sudo mkdir -p /usr/share/sunshine
