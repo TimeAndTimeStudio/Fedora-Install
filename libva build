@@ -3,6 +3,7 @@ sudo dnf install git \
     pkgconf-pkg-config libdrm-devel
 
 git clone https://github.com/intel/libva.git
+cd libva
 git checkout 2.24.1
 meson setup build \
     --prefix=/opt/mesa-install/usr \
