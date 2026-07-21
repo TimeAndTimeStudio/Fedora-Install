@@ -69,7 +69,7 @@ cmake -B build -G Ninja -S . \
   -DSUNSHINE_ENABLE_WAYLAND=OFF \
   -DSUNSHINE_ENABLE_PORTAL=OFF \
   -DSUNSHINE_ENABLE_X11=OFF \
-  -DCMAKE_PREFIX_PATH=/opt/mesa/usr \
+  -DCMAKE_PREFIX_PATH=/opt/mesa \
 ninja -C build
 
 sudo mkdir -p /usr/share/sunshine
