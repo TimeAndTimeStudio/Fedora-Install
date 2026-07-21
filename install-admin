@@ -149,8 +149,8 @@ if [ "${selected[2]}" = 1 ]; then
     sudo mv mesa /usr/local/bin/mesa
 
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/mesa.tar.xz
-    tar -xvf mesa-install.tar.xz
-    rm mesa-install.tar.xz
+    tar -xvf mesa.tar.xz
+    rm mesa.tar.xz
 
     sudo mv mesa /opt/
     
