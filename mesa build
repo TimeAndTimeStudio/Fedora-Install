@@ -50,7 +50,7 @@ git checkout mesa-26.1.5
 
 
 meson setup build \
-    --prefix=/usr \
+    --prefix=/opt/mesa \
     --buildtype=release \
     -Dgallium-drivers=radeonsi,iris \
     -Dvulkan-drivers=amd,intel \
