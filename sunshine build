@@ -54,6 +54,7 @@ git submodule update --init --recursive
 mkdir build
 
 export BUILD_VERSION=2026.516.143833
+export BRANCH=master
 cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF
 ninja -C build
 
