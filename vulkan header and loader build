@@ -1,0 +1,32 @@
+git clone https://github.com/KhronosGroup/Vulkan-Headers.git
+cd Vulkan-Headers
+mkdir build
+cd build
+
+cmake .. \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/opt/mesa-install/usr
+
+cmake --build . -j$(nproc)
+
+sudo cmake --install .
+
+
+sudo dnf install git gcc gcc-c++ make \
+    libX11-devel libxkbcommon-devel wayland-devel libXrandr-devel
+
+git clone https://github.com/KhronosGroup/Vulkan-Loader.git
+
+cd Vulkan-Loader
+mkdir build
+cd build
+
+cmake .. \
+  -DUPDATE_DEPS=OFF \
+  -DVULKAN_HEADERS_INSTALL_DIR=/opt/mesa-install/usr \
+  -DCMAKE_PREFIX_PATH=/opt/mesa-install/usr \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/opt/mesa-install/usr 
+
+cmake --build . -j$(nproc)
+sudo cmake --install .
