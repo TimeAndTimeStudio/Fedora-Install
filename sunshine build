@@ -49,11 +49,11 @@ sudo dnf install -y \
 
 git clone https://github.com/lizardbyte/sunshine.git
 cd sunshine
-git checkout v2026.715.205118
+git checkout v2026.516.143833
 git submodule update --init --recursive
 mkdir build
 
-export BUILD_VERSION=2026.715.205118
+export BUILD_VERSION=2026.516.143833
 export BRANCH=master
 cmake -B build -G Ninja -S . \
   -DSUNSHINE_ENABLE_CUDA=OFF \
