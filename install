@@ -152,6 +152,11 @@ if [ "${selected[2]}" = 1 ]; then
     rm mesa.tar.xz
 
     sudo mv mesa /opt/
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/assets.tar.xz
+    tar -xvf assets.tar.xz
+    rm assets.tar.xz
+    sudo mv assets /usr/local/
 fi
 
 if [ "${selected[3]}" = 1 ]; then
