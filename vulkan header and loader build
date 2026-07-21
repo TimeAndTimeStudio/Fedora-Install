@@ -5,7 +5,7 @@ cd build
 
 cmake .. \
   -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/opt/mesa-install/usr
+  -DCMAKE_INSTALL_PREFIX=/opt/mesa/usr
 
 cmake --build . -j$(nproc)
 
@@ -23,10 +23,10 @@ cd build
 
 cmake .. \
   -DUPDATE_DEPS=OFF \
-  -DVULKAN_HEADERS_INSTALL_DIR=/opt/mesa-install/usr \
-  -DCMAKE_PREFIX_PATH=/opt/mesa-install/usr \
+  -DVULKAN_HEADERS_INSTALL_DIR=/opt/mesa/usr \
+  -DCMAKE_PREFIX_PATH=/opt/mesa/usr \
   -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/opt/mesa-install/usr 
+  -DCMAKE_INSTALL_PREFIX=/opt/mesa/usr 
 
 cmake --build . -j$(nproc)
 sudo cmake --install .
