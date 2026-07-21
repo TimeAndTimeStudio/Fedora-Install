@@ -1,0 +1,8 @@
+git clone https://gitlab.freedesktop.org/mesa/libdrm.git
+cd libdrm
+
+meson setup build \
+  --prefix=/opt/drm/usr
+
+ninja -C build
+ninja -C build install
