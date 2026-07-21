@@ -2,6 +2,7 @@ sudo dnf install git \
     meson ninja-build gcc gcc-c++ \
     pkgconf-pkg-config libdrm-devel
 
+git clone https://github.com/intel/libva.git
 git checkout 2.24.1
 meson setup build \
     --prefix=/opt/mesa-install/usr \
