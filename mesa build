@@ -57,5 +57,4 @@ meson setup build \
     -Dvideo-codecs=all
 
 ninja -C build -j$(nproc)
-DESTDIR=$HOME/mesa-install ninja -C build install
-ls ~/mesa-install/usr
+ninja -C build install
