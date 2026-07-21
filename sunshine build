@@ -55,7 +55,11 @@ mkdir build
 
 export BUILD_VERSION=2026.516.143833
 export BRANCH=master
-cmake -B build -G Ninja -S . -DSUNSHINE_ENABLE_CUDA=OFF
+cmake -B build -G Ninja -S . \
+  -DSUNSHINE_ENABLE_CUDA=OFF \
+  -DCMAKE_PREFIX_PATH=/opt/mesa-install/usr \
+  -DVulkan_LIBRARY=/opt/mesa-install/usr/lib64/libvulkan.so \
+  -DVulkan_INCLUDE_DIR=/opt/mesa-install/usr/include
 ninja -C build
 
 sudo mkdir -p /usr/share/sunshine
