@@ -16,7 +16,7 @@ echo
 items=(
     "Steam"
     "Moonlight Support Amd And Intel"
-    "Sunshine"
+    "Sunshine Support Amd Only"
     "Modrinth App"
     "Brave Origin"
     "WireGuard"
