@@ -110,6 +110,7 @@ fi
 
 if [ "${selected[2]}" = 1 ]; then
     echo "Installing Sunshine..."
+    sudo dnf install miniupnpc
     sudo modprobe uinput
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/sunshine
     sudo chmod +x sunshine
