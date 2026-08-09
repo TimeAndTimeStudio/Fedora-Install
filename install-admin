@@ -25,9 +25,10 @@ items=(
     "VS Code"
     "Arduino"
     "Disk Add"
+    "Multipass"
 )
 
-selected=(0 0 0 0 0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -189,9 +190,10 @@ fi
 
 if [ "${selected[8]}" = 1 ]; then
     echo "Installing VS Code..."
-    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/code-1.129.1-1784303689.el8.x86_64.rpm
-    sudo dnf install ./code-1.129.1-1784303689.el8.x86_64.rpm
-    sudo rm code-1.129.1-1784303689.el8.x86_64.rpm
+    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
+    echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+    sudo dnf check-update &&
+    sudo dnf install code
 fi
 
 
@@ -217,6 +219,13 @@ fi
 if [ "${selected[10]}" = 1 ]; then
     echo "Installing Disk Add..."
     echo "UUID=f37f6f6b-68a8-4d20-b2ba-83829dafcad6 /mnt/Game ext4 defaults 0 2" | sudo tee -a /etc/fstab
+fi
+
+if [ "${selected[11]}" = 1 ]; then
+    echo "Installing Multipass..."
+    sudo dnf install snapd
+    sudo ln -s /var/lib/snapd/snap /snap
+    sudo snap install multipass
 fi
 
 echo "================================"
