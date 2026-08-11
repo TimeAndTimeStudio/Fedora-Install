@@ -24,11 +24,10 @@ items=(
     "Wallpaper"
     "VS Code"
     "Arduino"
-    "Disk Add"
     "Multipass"
 )
 
-selected=(0 0 0 0 0 0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -183,8 +182,8 @@ fi
 
 if [ "${selected[7]}" = 1 ]; then
     echo "Installing Wallpaper..."
-    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Game-Web-Site/refs/heads/main/019b913a-a484-7237-b907-2444e37e22e2.png
-    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Game-Web-Site/refs/heads/main/horizontal%20pic.jpg
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
 fi
 
 
@@ -217,11 +216,6 @@ if [ "${selected[9]}" = 1 ]; then
 fi
 
 if [ "${selected[10]}" = 1 ]; then
-    echo "Installing Disk Add..."
-    echo "UUID=f37f6f6b-68a8-4d20-b2ba-83829dafcad6 /mnt/Game ext4 defaults 0 2" | sudo tee -a /etc/fstab
-fi
-
-if [ "${selected[11]}" = 1 ]; then
     echo "Installing Multipass..."
     sudo dnf install snapd
     sudo ln -s /var/lib/snapd/snap /snap
