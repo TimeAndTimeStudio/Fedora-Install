@@ -237,8 +237,6 @@ sudo dnf install -y \
     google-noto-serif-cjk-fonts \
     google-noto-serif-thai-fonts
 
-sudo dnf install default-fonts-core -y
-
 echo
 echo "================================"
 echo " Removing unnecessary packages"
