@@ -44,6 +44,40 @@ for n in $choices; do
 done
 
 echo "================================"
+echo " Installing GNOME base system"
+echo "================================"
+
+sudo dnf install -y \
+    gdm \
+    gnome-terminal \
+    nautilus \
+    google-noto-sans-thai-fonts \
+    google-noto-sans-cjk-fonts \
+    tar \
+    google-noto-serif-cjk-fonts \
+    google-noto-serif-thai-fonts
+
+echo
+echo "================================"
+echo " Removing unnecessary packages"
+echo "================================"
+
+sudo dnf remove -y \
+    gnome-tour \
+    malcontent-control \
+    gnome-remote-desktop
+
+
+echo
+echo "================================"
+echo " Configure Plymouth"
+echo "================================"
+
+sudo dnf install -y plymouth-system-theme
+
+sudo plymouth-set-default-theme -R bgrt
+
+echo "================================"
 echo " Installing selected apps"
 echo "================================"
 
@@ -52,7 +86,7 @@ if [ "${selected[0]}" = 1 ]; then
     sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 tar -y
     wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/steam/icons.tar.xz
-    
+
     tar -xvf steam_latest-stable.tar.gz
     cd steam-launcher
     sudo rm steam
@@ -110,7 +144,7 @@ if [ "${selected[2]}" = 1 ]; then
     sudo getcap /tmp/sunshine
     sudo mv /tmp/sunshine ./sunshine
     sudo mv sunshine /usr/local/bin/sunshine
-    
+
     sudo usermod -aG input $USER
 
     sudo wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/sunshine/uinput.rules
@@ -130,7 +164,7 @@ if [ "${selected[2]}" = 1 ]; then
     sudo firewall-cmd --permanent --add-port=47989/tcp
     sudo firewall-cmd --permanent --add-port=47990/tcp
     sudo firewall-cmd --permanent --add-port=48010/tcp
-    
+
     sudo firewall-cmd --permanent --add-port=47998-48000/udp
     sudo firewall-cmd --reload
 
@@ -194,40 +228,6 @@ if [ "${selected[7]}" = 1 ]; then
     mv prism.desktop ~/.local/share/applications/
     sudo chown -R "$USER:$USER" /Prism
 fi
-
-echo "================================"
-echo " Installing GNOME base system"
-echo "================================"
-
-sudo dnf install -y \
-    gdm \
-    gnome-terminal \
-    nautilus \
-    google-noto-sans-thai-fonts \
-    google-noto-sans-cjk-fonts \
-    tar \
-    google-noto-serif-cjk-fonts \
-    google-noto-serif-thai-fonts
-
-echo
-echo "================================"
-echo " Removing unnecessary packages"
-echo "================================"
-
-sudo dnf remove -y \
-    gnome-tour \
-    malcontent-control \
-    gnome-remote-desktop
-
-
-echo
-echo "================================"
-echo " Configure Plymouth"
-echo "================================"
-
-sudo dnf install -y plymouth-system-theme
-
-sudo plymouth-set-default-theme -R bgrt
 
 echo
 echo "================================"
