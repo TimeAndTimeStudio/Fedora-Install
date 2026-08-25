@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-# echo "install_weak_deps=False" | sudo tee -a /etc/dnf/dnf.conf
+echo "install_weak_deps=False" | sudo tee -a /etc/dnf/dnf.conf
 # ==============================
 # Fedora Minimal GNOME Setup
 # ==============================
@@ -49,6 +49,7 @@ echo "================================"
 
 sudo dnf install -y \
     gdm \
+    wget \
     gnome-terminal \
     nautilus \
     google-noto-sans-thai-fonts \
