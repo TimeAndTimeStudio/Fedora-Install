@@ -212,6 +212,7 @@ if [ "${selected[8]}" = 1 ]; then
     mv org.prismlauncher.PrismLauncher.svg /usr/share/icons/hicolor/scalable/
     wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/prism.desktop
     mv prism.desktop ~/.local/share/applications/
+    sudo chown -R "$USER:$USER" /Prism
 fi
 
 echo "================================"
