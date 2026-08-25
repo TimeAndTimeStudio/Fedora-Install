@@ -6,3 +6,4 @@ Icon=org.prismlauncher.PrismLauncher
 Terminal=false
 Type=Application
 Categories=Game;
+StartupWMClass=org.prismlauncher.PrismLauncher
