@@ -1,0 +1,39 @@
+ถ้าจะ สร้างพาร์ทิชันเป็น ext4 และตั้งชื่อ (label) บน Linux ใช้ mkfs.ext4 -L ได้เลย
+
+1. ตรวจสอบว่า Disk/Partition คืออะไร
+lsblk -f
+
+เช่นเห็น:
+
+sdb
+└─sdb1
+
+สมมติว่าจะฟอร์แมต /dev/sdb1 ข้อมูลทั้งหมดในพาร์ทิชันนี้จะถูกลบ
+
+2. สร้าง ext4 พร้อมตั้งชื่อ
+sudo mkfs.ext4 -L MyDisk /dev/sdb1
+
+เช่นตั้งชื่อว่า Games:
+
+sudo mkfs.ext4 -L Games /dev/sdb1
+3. ตรวจสอบ
+lsblk -f
+
+จะได้ประมาณ:
+
+NAME   FSTYPE LABEL  UUID                                 MOUNTPOINTS
+sdb
+└─sdb1 ext4   Games  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ถ้า Disk ยังไม่มี partition
+
+ถ้าเป็น /dev/sdb ทั้งลูกและยังไม่มี /dev/sdb1 ต้องสร้าง partition ก่อน เช่นใช้:
+
+sudo fdisk /dev/sdb
+
+แล้วสร้าง partition ใหม่ จากนั้น:
+
+sudo mkfs.ext4 -L Games /dev/sdb1
+
+ระวัง: อย่าใช้ /dev/sdb แทน /dev/sdb1 ถ้าคุณตั้งใจจะสร้าง filesystem บน partition เพราะจะเขียนทับ partition table ได้
+
+ถ้าบอกผมว่า lsblk -f ของคุณออกมาอย่างไร ผมบอกคำสั่งที่ตรงกับ Disk ของคุณได้เลย.
