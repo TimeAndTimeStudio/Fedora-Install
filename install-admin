@@ -208,8 +208,8 @@ if [ "${selected[8]}" = 1 ]; then
     cd ~
     wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/org.prismlauncher.PrismLauncher.png
     wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/org.prismlauncher.PrismLauncher.svg
-    mv org.prismlauncher.PrismLauncher.png /usr/share/icons/hicolor/256x256/
-    mv org.prismlauncher.PrismLauncher.svg /usr/share/icons/hicolor/scalable/
+    sudo mv org.prismlauncher.PrismLauncher.png /usr/share/icons/hicolor/256x256/apps/
+    sudo mv org.prismlauncher.PrismLauncher.svg /usr/share/icons/hicolor/scalable/apps/
     wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/prism.desktop
     mv prism.desktop ~/.local/share/applications/
     sudo chown -R "$USER:$USER" /Prism
