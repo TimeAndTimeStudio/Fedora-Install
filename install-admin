@@ -17,17 +17,14 @@ items=(
     "Steam"
     "Moonlight Support Amd And Intel"
     "Sunshine Support Amd Only"
-    "Modrinth App"
     "Brave Origin"
     "WireGuard"
-    "Remove REPO"
     "Wallpaper"
     "VS Code"
     "Arduino"
-    "Multipass"
 )
 
-selected=(0 0 0 0 0 0 0 0 0 0 0)
+selected=(0 0 0 0 0 0 0 0 0)
 
 for i in "${!items[@]}"; do
     echo "$i) ${items[$i]}"
@@ -49,14 +46,6 @@ done
 echo "================================"
 echo " Installing selected apps"
 echo "================================"
-
-if [ "${selected[6]}" = 1 ]; then
-    echo "Installing Remove REPO..."
-    sudo rm /etc/yum.repos.d/fedora-updates-testing.repo
-    sudo dnf clean all
-    sudo dnf makecache
-    sudo dnf update -y
-fi
 
 if [ "${selected[0]}" = 1 ]; then
     echo "Installing Steam..."
@@ -163,31 +152,24 @@ if [ "${selected[2]}" = 1 ]; then
 fi
 
 if [ "${selected[3]}" = 1 ]; then
-    echo "Installing Modrinth App..."
-    wget https://launcher-files.modrinth.com/versions/0.15.11/linux/Modrinth%20App-0.15.11-1.x86_64.rpm
-    sudo dnf install ./"Modrinth App-0.15.11-1.x86_64.rpm" -y
-    sudo rm "Modrinth App-0.15.11-1.x86_64.rpm"
-fi
-
-if [ "${selected[4]}" = 1 ]; then
     echo "Installing Brave Origin..."
     sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
     sudo dnf install brave-origin -y
 fi
 
-if [ "${selected[5]}" = 1 ]; then
+if [ "${selected[4]}" = 1 ]; then
     echo "Installing WireGuard..."
     sudo dnf install wireguard-tools -y
 fi
 
-if [ "${selected[7]}" = 1 ]; then
+if [ "${selected[5]}" = 1 ]; then
     echo "Installing Wallpaper..."
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
 fi
 
 
-if [ "${selected[8]}" = 1 ]; then
+if [ "${selected[6]}" = 1 ]; then
     echo "Installing VS Code..."
     sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
     echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
@@ -196,7 +178,7 @@ if [ "${selected[8]}" = 1 ]; then
 fi
 
 
-if [ "${selected[9]}" = 1 ]; then
+if [ "${selected[7]}" = 1 ]; then
     echo "Installing Arduino..."
     sudo dnf install tar -y
     wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/arduino/icons.tar.xz
@@ -215,11 +197,21 @@ if [ "${selected[9]}" = 1 ]; then
     sudo rm -r icons
 fi
 
-if [ "${selected[10]}" = 1 ]; then
-    echo "Installing Multipass..."
-    sudo dnf install snapd
-    sudo ln -s /var/lib/snapd/snap /snap
-    sudo snap install multipass
+if [ "${selected[8]}" = 1 ]; then
+    echo "Installing Prism..."
+    cd /
+    sudo mkdir Prism
+    cd Prism
+    sudo wget https://github.com/PrismLauncher/PrismLauncher/releases/download/11.0.3/PrismLauncher-Linux-Qt6-Portable-11.0.3.tar.gz
+    sudo tar -xvf PrismLauncher-Linux-Qt6-Portable-11.0.3.tar.gz
+    sudo rm PrismLauncher-Linux-Qt6-Portable-11.0.3.tar.gz
+    cd ~
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/org.prismlauncher.PrismLauncher.png
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/org.prismlauncher.PrismLauncher.svg
+    mv org.prismlauncher.PrismLauncher.png /usr/share/icons/hicolor/256x256/
+    mv org.prismlauncher.PrismLauncher.svg /usr/share/icons/hicolor/scalable/
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/prism.desktop
+    mv prism.desktop ~/.local/share/applications/
 fi
 
 echo "================================"
