@@ -56,7 +56,8 @@ sudo dnf install -y \
     google-noto-sans-cjk-fonts \
     tar \
     google-noto-serif-cjk-fonts \
-    google-noto-serif-thai-fonts
+    google-noto-serif-thai-fonts \
+    pipewire-pulseaudio
 
 echo
 echo "================================"
