@@ -15,7 +15,8 @@ dnf install -y \
     google-noto-serif-thai-fonts \
     pipewire-pulseaudio \
     nodejs \
-    npm
+    npm \
+    libayatana-appindicator-gtk3
 
 dnf remove -y \
     gnome-tour \
@@ -56,6 +57,205 @@ dnf install brave-origin -y
 echo "Installing Wallpaper..."
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
+
+
+#!/usr/bin/env bash
+set -euo pipefail
+
+BASE_URL="https://repository.spotify.com"
+DIST="stable"
+PACKAGES_PATH="dists/$DIST/non-free/binary-amd64/Packages"
+
+WORK_DIR="${1:-$PWD/spotify-download}"
+TMP_DIR="$(mktemp -d)"
+
+mkdir -p "$WORK_DIR"
+
+PACKAGES="$TMP_DIR/Packages"
+DEB="$TMP_DIR/spotify.deb"
+ROOT_DIR="$TMP_DIR/root"
+
+cleanup() {
+    rm -rf "$TMP_DIR"
+}
+trap cleanup EXIT
+
+echo "==> Downloading official Spotify package metadata..."
+
+curl -fL --retry 3 \
+    "$BASE_URL/$PACKAGES_PATH" \
+    -o "$PACKAGES"
+
+echo "==> Finding latest Spotify package..."
+
+PACKAGE_INFO="$(
+    awk '
+        /^Package: spotify-client$/ {
+            found=1
+            block=""
+        }
+
+        found {
+            block = block $0 "\n"
+        }
+
+        found && /^$/ {
+            print block
+            exit
+        }
+    ' "$PACKAGES"
+)"
+
+VERSION="$(printf '%s\n' "$PACKAGE_INFO" | sed -n 's/^Version: //p')"
+FILENAME="$(printf '%s\n' "$PACKAGE_INFO" | sed -n 's/^Filename: //p')"
+SHA256="$(printf '%s\n' "$PACKAGE_INFO" | sed -n 's/^SHA256: //p')"
+SHA512="$(printf '%s\n' "$PACKAGE_INFO" | sed -n 's/^SHA512: //p')"
+
+if [[ -z "$VERSION" || -z "$FILENAME" || -z "$SHA256" || -z "$SHA512" ]]; then
+    echo "ERROR: Could not read Spotify package metadata."
+    exit 1
+fi
+
+echo
+echo "Spotify version : $VERSION"
+echo "Package         : $FILENAME"
+echo "SHA256          : $SHA256"
+echo "SHA512          : $SHA512"
+echo
+
+echo "==> Downloading Spotify .deb..."
+
+curl -fL --retry 3 \
+    "$BASE_URL/$FILENAME" \
+    -o "$DEB"
+
+echo
+echo "==> Verifying SHA256..."
+
+echo "$SHA256  $DEB" | sha256sum -c -
+
+echo
+echo "==> Verifying SHA512..."
+
+echo "$SHA512  $DEB" | sha512sum -c -
+
+echo
+echo "==> Extracting .deb..."
+
+mkdir -p "$ROOT_DIR"
+
+ar x "$DEB" --output "$ROOT_DIR"
+
+DATA_ARCHIVE="$(
+    find "$ROOT_DIR" \
+        -maxdepth 1 \
+        -type f \
+        -name 'data.tar.*' \
+        -print -quit
+)"
+
+if [[ -z "$DATA_ARCHIVE" ]]; then
+    echo "ERROR: data archive not found."
+    exit 1
+fi
+
+mkdir -p "$ROOT_DIR/data"
+
+tar -xf "$DATA_ARCHIVE" -C "$ROOT_DIR/data"
+
+SPOTIFY_DIR="$ROOT_DIR/data/usr/share/spotify"
+
+if [[ ! -d "$SPOTIFY_DIR" ]]; then
+    echo "ERROR: /usr/share/spotify was not found."
+    exit 1
+fi
+
+echo "==> Removing ICO..."
+
+rm -f "$SPOTIFY_DIR/spotify_icon.ico"
+
+echo "==> Preparing final output..."
+
+rm -rf "$WORK_DIR/spotify"
+
+mv "$SPOTIFY_DIR" "$WORK_DIR/spotify"
+
+DESKTOP_FILE="$WORK_DIR/spotify/spotify.desktop"
+
+if [[ -f "$DESKTOP_FILE" ]]; then
+    echo "==> Updating spotify.desktop..."
+
+    sed -i \
+        -e 's|^TryExec=.*|TryExec=/usr/lib/spotify/spotify|' \
+        -e 's|^Exec=.*|Exec=/usr/lib/spotify/spotify %U|' \
+        "$DESKTOP_FILE"
+fi
+
+echo "==> Installing desktop entry..."
+
+mv "$WORK_DIR/spotify/spotify.desktop" \
+    "$HOME/.local/share/applications/spotify.desktop"
+
+chmod +x "$HOME/.local/share/applications/spotify.desktop"
+
+echo "==> Installing icons..."
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-16.png" \
+    /usr/share/icons/hicolor/16x16/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-22.png" \
+    /usr/share/icons/hicolor/22x22/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-24.png" \
+    /usr/share/icons/hicolor/24x24/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-32.png" \
+    /usr/share/icons/hicolor/32x32/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-48.png" \
+    /usr/share/icons/hicolor/48x48/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-64.png" \
+    /usr/share/icons/hicolor/64x64/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-128.png" \
+    /usr/share/icons/hicolor/128x128/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-256.png" \
+    /usr/share/icons/hicolor/256x256/apps/spotify-client.png
+
+mv "$WORK_DIR/spotify/icons/spotify-linux-512.png" \
+    /usr/share/icons/hicolor/512x512/apps/spotify-client.png
+
+rm -r "$WORK_DIR/spotify/icons"
+
+echo "==> Installing Spotify..."
+
+rm -r /usr/lib/spotify
+mv "$WORK_DIR/spotify" /usr/lib/spotify
+
+echo "==> Updating icon cache..."
+
+gtk-update-icon-cache -f /usr/share/icons/hicolor
+update-desktop-database "$HOME/.local/share/applications"
+
+echo "==> Removing temporary output..."
+
+rm -r "$WORK_DIR"
+
+echo
+echo "Done."
+echo
+echo "Spotify version:"
+echo "  $VERSION"
+echo
+echo "Installed:"
+echo "  /usr/lib/spotify/spotify"
+echo "  $HOME/.local/share/applications/spotify.desktop"
+echo
+echo "Temporary files have been removed."
+
+
 
 npm install -g tmg-studio
 npm install -g tma-agent
