@@ -2,9 +2,6 @@
 
 set -e
 
-echo "Configuring dnf..."
-echo "install_weak_deps=False" | tee -a /etc/dnf/dnf.conf
-
 echo "Installing base packages..."
 dnf install -y \
     gdm \
