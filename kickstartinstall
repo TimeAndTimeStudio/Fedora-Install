@@ -1,0 +1,245 @@
+#!/usr/bin/env bash
+
+set -e
+echo "install_weak_deps=False" | sudo tee -a /etc/dnf/dnf.conf
+# ==============================
+# Fedora Minimal GNOME Setup
+# ==============================
+
+echo
+echo "================================"
+echo " Optional Applications"
+echo "================================"
+echo
+
+
+items=(
+    "Steam"
+    "Moonlight Support Amd And Intel"
+    "Sunshine Support Amd Only"
+    "Brave Origin"
+    "WireGuard"
+    "Wallpaper"
+    "VS Code"
+    "Prism Launcher"
+)
+
+selected=(0 0 0 0 0 0 0 0)
+
+for i in "${!items[@]}"; do
+    echo "$i) ${items[$i]}"
+done
+
+echo
+echo "Select multiple items separated by spaces"
+echo "Example: 0 1 5"
+echo
+
+read -rp "Select: " choices
+
+for n in $choices; do
+    if [[ "$n" =~ ^[0-9]+$ ]] && [ "$n" -lt "${#items[@]}" ]; then
+        selected[$n]=1
+    fi
+done
+
+echo "================================"
+echo " Installing GNOME base system"
+echo "================================"
+
+sudo dnf install -y \
+    gdm \
+    wget \
+    gnome-terminal \
+    nautilus \
+    google-noto-sans-thai-fonts \
+    google-noto-sans-cjk-fonts \
+    tar \
+    google-noto-serif-cjk-fonts \
+    google-noto-serif-thai-fonts \
+    pipewire-pulseaudio
+
+echo
+echo "================================"
+echo " Removing unnecessary packages"
+echo "================================"
+
+sudo dnf remove -y \
+    gnome-tour \
+    malcontent-control \
+    gnome-remote-desktop
+
+
+echo
+echo "================================"
+echo " Configure Plymouth"
+echo "================================"
+
+sudo dnf install -y plymouth-system-theme
+
+sudo plymouth-set-default-theme -R bgrt
+
+echo "================================"
+echo " Installing selected apps"
+echo "================================"
+
+if [ "${selected[0]}" = 1 ]; then
+    echo "Installing Steam..."
+    sudo dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 tar -y
+    wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/steam/icons.tar.xz
+
+    tar -xvf steam_latest-stable.tar.gz
+    cd steam-launcher
+    sudo rm steam
+    sudo mv bin_steam.sh steam
+    sudo mv steam /usr/bin/
+    mkdir -p ~/.local/share/applications
+    mv steam.desktop ~/.local/share/applications/steam.desktop
+    chmod +x ~/.local/share/applications/steam.desktop
+    sudo mkdir /usr/lib/steam
+    sudo mv bootstraplinux_ubuntu12_32.tar.xz /usr/lib/steam/
+    cd ../
+    tar -xvf icons.tar.xz
+    sudo cp -r icons/* /usr/share/icons/hicolor/
+    sudo rm icons.tar.xz steam_latest-stable.tar.gz
+    sudo rm -r steam-launcher icons
+fi
+
+
+if [ "${selected[1]}" = 1 ]; then
+    echo "Installing Moonlight..."
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/moonlight
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.svg
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/moonlight/moonlight.desktop
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/mesa.sh
+
+    sudo chmod +x moonlight.desktop moonlight mesa.sh
+    mkdir -p ~/.local/share/applications
+    mv moonlight.desktop ~/.local/share/applications/moonlight.desktop
+    sudo mv mesa.sh /usr/bin/mesa.sh
+
+    sudo mv moonlight.svg /usr/share/icons/hicolor/scalable/apps/moonlight.svg
+    sudo mv moonlight /usr/bin/moonlight
+
+    sudo dnf install SDL2_ttf.x86_64 libswscale-free.x86_64 tar -y
+    sudo dnf install --setopt=install_weak_deps=False qt6-qtdeclarative -y
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/ffmpeg.tar.xz
+    tar -xvf ffmpeg.tar.xz
+    rm ffmpeg.tar.xz
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/mesa-install.tar.xz
+    tar -xvf mesa-install.tar.xz
+    rm mesa-install.tar.xz
+fi
+
+
+if [ "${selected[2]}" = 1 ]; then
+    echo "Installing Sunshine..."
+    sudo dnf install miniupnpc
+    sudo modprobe uinput
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/sunshine
+    sudo chmod +x sunshine
+    sudo cp ./sunshine /tmp
+    sudo setcap cap_sys_admin,cap_sys_nice+p /tmp/sunshine
+    sudo getcap /tmp/sunshine
+    sudo mv /tmp/sunshine ./sunshine
+    sudo mv sunshine /usr/local/bin/sunshine
+
+    sudo usermod -aG input $USER
+
+    sudo wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/sunshine/uinput.rules
+    sudo mv uinput.rules /etc/udev/rules.d/uinput.rules
+
+    sudo udevadm control --reload-rules
+    sudo udevadm trigger /dev/uinput
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/sunshine/sunshine.service
+    mkdir -p ~/.config/systemd/user/
+    mv sunshine.service ~/.config/systemd/user/sunshine.service
+
+    systemctl --user daemon-reload
+    systemctl --user enable sunshine.service
+
+    sudo firewall-cmd --permanent --add-port=47984/tcp
+    sudo firewall-cmd --permanent --add-port=47989/tcp
+    sudo firewall-cmd --permanent --add-port=47990/tcp
+    sudo firewall-cmd --permanent --add-port=48010/tcp
+
+    sudo firewall-cmd --permanent --add-port=47998-48000/udp
+    sudo firewall-cmd --reload
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/mesa
+
+    sudo chmod +x mesa
+    sudo mv mesa /usr/local/bin/mesa
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/mesa.tar.xz
+    tar -xvf mesa.tar.xz
+    rm mesa.tar.xz
+
+    sudo mv mesa /opt/
+
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/assets.tar.xz
+    tar -xvf assets.tar.xz
+    rm assets.tar.xz
+    sudo mv assets /usr/local/
+fi
+
+if [ "${selected[3]}" = 1 ]; then
+    echo "Installing Brave Origin..."
+    sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    sudo dnf install brave-origin -y
+fi
+
+if [ "${selected[4]}" = 1 ]; then
+    echo "Installing WireGuard..."
+    sudo dnf install wireguard-tools -y
+fi
+
+if [ "${selected[5]}" = 1 ]; then
+    echo "Installing Wallpaper..."
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
+    wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
+fi
+
+
+if [ "${selected[6]}" = 1 ]; then
+    echo "Installing VS Code..."
+    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
+    echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+    sudo dnf check-update &&
+    sudo dnf install code
+fi
+
+if [ "${selected[7]}" = 1 ]; then
+    echo "Installing Prism..."
+    cd /
+    sudo mkdir Prism
+    cd Prism
+    sudo wget https://github.com/PrismLauncher/PrismLauncher/releases/download/11.0.3/PrismLauncher-Linux-Qt6-Portable-11.0.3.tar.gz
+    sudo tar -xvf PrismLauncher-Linux-Qt6-Portable-11.0.3.tar.gz
+    sudo rm PrismLauncher-Linux-Qt6-Portable-11.0.3.tar.gz
+    cd ~
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/org.prismlauncher.PrismLauncher.png
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/org.prismlauncher.PrismLauncher.svg
+    sudo mv org.prismlauncher.PrismLauncher.png /usr/share/icons/hicolor/256x256/apps/
+    sudo mv org.prismlauncher.PrismLauncher.svg /usr/share/icons/hicolor/scalable/apps/
+    wget https://raw.githubusercontent.com/TimeAndTimeStudio/Fedora-Install/refs/heads/main/prism/prism.desktop
+    mv prism.desktop ~/.local/share/applications/
+    sudo chown -R "$USER:$USER" /Prism
+fi
+
+echo
+echo "================================"
+echo " Enable GNOME Login"
+echo "================================"
+
+sudo systemctl set-default graphical.target
+sudo gtk-update-icon-cache -f /usr/share/icons/hicolor
+sudo sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
+sudo sed -i '1i GRUB_TIMEOUT_STYLE=hidden' /etc/default/grub
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+sudo rm install-admin
+sudo reboot now
