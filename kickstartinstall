@@ -13,7 +13,9 @@ dnf install -y \
     tar \
     google-noto-serif-cjk-fonts \
     google-noto-serif-thai-fonts \
-    pipewire-pulseaudio
+    pipewire-pulseaudio \
+    nodejs \
+    npm
 
 dnf remove -y \
     gnome-tour \
@@ -55,10 +57,11 @@ echo "Installing Wallpaper..."
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
 
+npm install -g tmg-studio
+npm install -g tma-agent
+
 systemctl set-default graphical.target
 gtk-update-icon-cache -f /usr/share/icons/hicolor
 sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
 sed -i '1i GRUB_TIMEOUT_STYLE=hidden' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
-rm install-admin
-reboot now
