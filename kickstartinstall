@@ -39,9 +39,9 @@ cd steam-launcher
 rm steam
 mv bin_steam.sh steam
 mv steam /usr/bin/
-mkdir -p ~/.local/share/applications
-mv steam.desktop ~/.local/share/applications/steam.desktop
-chmod +x ~/.local/share/applications/steam.desktop
+mkdir -p /home/timeandtime/.local/share/applications
+mv steam.desktop /home/timeandtime/.local/share/applications/steam.desktop
+chmod +x /home/timeandtime/.local/share/applications/steam.desktop
 mkdir /usr/lib/steam
 mv bootstraplinux_ubuntu12_32.tar.xz /usr/lib/steam/
 cd ../
@@ -231,7 +231,6 @@ rm -r "$WORK_DIR/spotify/icons"
 
 echo "==> Installing Spotify..."
 
-rm -r /usr/lib/spotify
 mv "$WORK_DIR/spotify" /usr/lib/spotify
 
 echo "==> Updating icon cache..."
