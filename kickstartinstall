@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 set -e
+
+echo "Configuring dnf..."
 echo "install_weak_deps=False" | tee -a /etc/dnf/dnf.conf
 
+echo "Installing base packages..."
 dnf install -y \
     gdm \
     wget \
@@ -18,6 +21,7 @@ dnf install -y \
     npm \
     libayatana-appindicator-gtk3
 
+echo "Removing unneeded packages..."
 dnf remove -y \
     gnome-tour \
     malcontent-control \
@@ -25,17 +29,23 @@ dnf remove -y \
     vim-minimal
 
 
+echo "Installing Plymouth theme..."
 dnf install -y plymouth-system-theme
 
+echo "Setting Plymouth theme (bgrt) and rebuilding initramfs..."
 plymouth-set-default-theme -R bgrt
 
 echo "Installing Steam..."
+echo "Steam: installing 32-bit dependencies..."
 dnf install glibc.i686 mesa-libGL.i686 libdrm.i686 libnsl.i686 tar -y
+echo "Steam: downloading files..."
 wget https://repo.steampowered.com/steam/archive/stable/steam_latest-stable.tar.gz
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/raw/refs/heads/main/steam/icons.tar.xz
 
+echo "Steam: extracting launcher..."
 tar -xvf steam_latest-stable.tar.gz
 cd steam-launcher
+echo "Steam: installing launcher and desktop entry..."
 rm steam
 mv bin_steam.sh steam
 mv steam /usr/bin/
@@ -45,19 +55,72 @@ chmod +x /home/timeandtime/.local/share/applications/steam.desktop
 mkdir /usr/lib/steam
 mv bootstraplinux_ubuntu12_32.tar.xz /usr/lib/steam/
 cd ../
+echo "Steam: installing icons..."
 tar -xvf icons.tar.xz
 cp -r icons/* /usr/share/icons/hicolor/
+echo "Steam: cleaning up..."
 rm icons.tar.xz steam_latest-stable.tar.gz
 rm -r steam-launcher icons
 
 echo "Installing Brave Origin..."
+echo "Brave: adding repository..."
 dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+echo "Brave: installing package..."
 dnf install brave-origin -y
 
 echo "Installing Wallpaper..."
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
 
+echo "Installing Spotify..."
+
+# Extract data.tar.* from a .deb (an "ar" archive) using only bash, coreutils and tar.
+# usage: extract_deb_data <file.deb> <dest-dir>
+extract_deb_data() {
+    local deb=$1 dest=$2 offset=8 total hdr name size flag
+    local LC_ALL=C
+
+    total=$(stat -c %s "$deb")
+
+    if [[ "$(head -c 8 "$deb")" != '!<arch>' ]]; then
+        echo "ERROR: not a .deb (ar) file: $deb" >&2
+        return 1
+    fi
+
+    while (( offset + 60 <= total )); do
+        hdr=$(dd if="$deb" bs=1 skip="$offset" count=60 2>/dev/null)
+        name=${hdr:0:16}; name=${name%% *}; name=${name%/}
+        size=${hdr:48:10}; size=${size%% *}
+        offset=$(( offset + 60 ))
+
+        if [[ $name == data.tar* ]]; then
+            # GNU tar cannot auto-detect compression when reading from a pipe
+            case $name in
+                data.tar)     flag=() ;;
+                data.tar.xz)  flag=(-J) ;;
+                data.tar.gz)  flag=(-z) ;;
+                data.tar.zst) flag=(--zstd) ;;
+                data.tar.bz2) flag=(-j) ;;
+                *)
+                    echo "ERROR: unsupported archive: $name" >&2
+                    return 1
+                    ;;
+            esac
+
+            dd if="$deb" bs=1M iflag=skip_bytes,count_bytes \
+                skip="$offset" count="$size" 2>/dev/null \
+                | tar -x "${flag[@]}" -f - -C "$dest"
+            return
+        fi
+
+        offset=$(( offset + size + size % 2 ))
+    done
+
+    echo "ERROR: data.tar.* not found in $deb" >&2
+    return 1
+}
+
+echo "==> Preparing Spotify working directories..."
 BASE_URL="https://repository.spotify.com"
 DIST="stable"
 PACKAGES_PATH="dists/$DIST/non-free/binary-amd64/Packages"
@@ -138,26 +201,9 @@ echo "$SHA512  $DEB" | sha512sum -c -
 echo
 echo "==> Extracting .deb..."
 
-mkdir -p "$ROOT_DIR"
-
-ar x "$DEB" --output "$ROOT_DIR"
-
-DATA_ARCHIVE="$(
-    find "$ROOT_DIR" \
-        -maxdepth 1 \
-        -type f \
-        -name 'data.tar.*' \
-        -print -quit
-)"
-
-if [[ -z "$DATA_ARCHIVE" ]]; then
-    echo "ERROR: data archive not found."
-    exit 1
-fi
-
 mkdir -p "$ROOT_DIR/data"
 
-tar -xf "$DATA_ARCHIVE" -C "$ROOT_DIR/data"
+extract_deb_data "$DEB" "$ROOT_DIR/data"
 
 SPOTIFY_DIR="$ROOT_DIR/data/usr/share/spotify"
 
@@ -225,11 +271,6 @@ echo "==> Installing Spotify..."
 
 mv "$WORK_DIR/spotify" /usr/lib/spotify
 
-echo "==> Updating icon cache..."
-
-gtk-update-icon-cache -f /usr/share/icons/hicolor
-update-desktop-database "$HOME/.local/share/applications"
-
 echo "==> Removing temporary output..."
 
 rm -r "$WORK_DIR"
@@ -248,11 +289,24 @@ echo "Temporary files have been removed."
 
 
 
+echo "Installing npm global packages..."
+echo "npm: tmg-studio"
 npm install -g tmg-studio
+echo "npm: tma-agent"
 npm install -g tma-agent
 
+echo "Setting default target to graphical..."
 systemctl set-default graphical.target
+
+echo "Updating icon cache..."
 gtk-update-icon-cache -f /usr/share/icons/hicolor
+
+echo "Configuring GRUB (hidden, no timeout)..."
 sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
 sed -i '1i GRUB_TIMEOUT_STYLE=hidden' /etc/default/grub
+
+echo "Regenerating GRUB config..."
 grub2-mkconfig -o /boot/grub2/grub.cfg
+
+echo
+echo "All done."
