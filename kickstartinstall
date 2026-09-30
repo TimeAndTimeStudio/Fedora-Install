@@ -58,10 +58,6 @@ echo "Installing Wallpaper..."
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
 
-
-#!/usr/bin/env bash
-set -euo pipefail
-
 BASE_URL="https://repository.spotify.com"
 DIST="stable"
 PACKAGES_PATH="dists/$DIST/non-free/binary-amd64/Packages"
@@ -169,10 +165,6 @@ if [[ ! -d "$SPOTIFY_DIR" ]]; then
     echo "ERROR: /usr/share/spotify was not found."
     exit 1
 fi
-
-echo "==> Removing ICO..."
-
-rm -f "$SPOTIFY_DIR/spotify_icon.ico"
 
 echo "==> Preparing final output..."
 
