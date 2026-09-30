@@ -71,6 +71,9 @@ dnf install brave-origin -y
 echo "Installing Wallpaper..."
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/019b913a-a484-7237-b907-2444e37e22e2.png
 wget https://github.com/TimeAndTimeStudio/Fedora-Install/releases/download/App-id-1/horizontal.pic.jpg
+echo "Wallpaper: moving files to /home/timeandtime..."
+mv 019b913a-a484-7237-b907-2444e37e22e2.png horizontal.pic.jpg /home/timeandtime/
+chown timeandtime:timeandtime /home/timeandtime/019b913a-a484-7237-b907-2444e37e22e2.png /home/timeandtime/horizontal.pic.jpg
 
 echo "Installing Spotify..."
 
@@ -231,10 +234,12 @@ fi
 
 echo "==> Installing desktop entry..."
 
-mv "$WORK_DIR/spotify/spotify.desktop" \
-    "$HOME/.local/share/applications/spotify.desktop"
+mkdir -p /home/timeandtime/.local/share/applications
 
-chmod +x "$HOME/.local/share/applications/spotify.desktop"
+mv "$WORK_DIR/spotify/spotify.desktop" \
+    "/home/timeandtime/.local/share/applications/spotify.desktop"
+
+chmod +x "/home/timeandtime/.local/share/applications/spotify.desktop"
 
 echo "==> Installing icons..."
 
@@ -283,7 +288,7 @@ echo "  $VERSION"
 echo
 echo "Installed:"
 echo "  /usr/lib/spotify/spotify"
-echo "  $HOME/.local/share/applications/spotify.desktop"
+echo "  /home/timeandtime/.local/share/applications/spotify.desktop"
 echo
 echo "Temporary files have been removed."
 
@@ -297,6 +302,9 @@ npm install -g tma-agent
 
 echo "Setting default target to graphical..."
 systemctl set-default graphical.target
+
+echo "Fixing ownership of /home/timeandtime/.local..."
+chown -R timeandtime:timeandtime /home/timeandtime/.local
 
 echo "Updating icon cache..."
 gtk-update-icon-cache -f /usr/share/icons/hicolor
